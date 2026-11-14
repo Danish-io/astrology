@@ -2,9 +2,9 @@
 import {
   state, API, escapeHtml, fmtDate, fmtTime, fmtDateTime, initials, badge, icon,
   layout, pageHero, empty, spinner, modal, toast, navigate, statusLabel, parseJson, ensure, qsa, enhance
-} from './core.js?v=13';
-import * as authSupabase from './auth-supabase.js?v=13';
-import { currentSession } from './supabase-client.js?v=13';
+} from './core.js?v=14';
+import * as authSupabase from './auth-supabase.js?v=14';
+import { currentSession } from './supabase-client.js?v=14';
 
 const TYPES = { puja: 'PUJA', consultation: 'CONSULTATION', event: 'EVENT' };
 
@@ -126,7 +126,7 @@ function loginGate() {
 
 function wireLoginGate() {
   const finish = async () => {
-    await (await import('./core.js?v=13')).loadMe();
+    await (await import('./core.js?v=14')).loadMe();
     renderCurrent();
   };
   const showNote = (msg) => {
@@ -797,7 +797,7 @@ export async function renderLogin() {
       pwBtn.disabled = true;
       try {
         await authSupabase.signIn(document.getElementById('pwEmail').value, document.getElementById('pwPass').value);
-        await (await import('./core.js?v=13')).loadMe();
+        await (await import('./core.js?v=14')).loadMe();
         toast('Welcome back', '', 'success');
         const u = state.user;
         navigate(u?.isOwner ? '#/admin' : u?.provider ? '#/provider' : '#/my');
@@ -828,7 +828,7 @@ export async function renderLogin() {
       showNote('');
     };
     const goIn = async () => {
-      await (await import('./core.js?v=13')).loadMe();
+      await (await import('./core.js?v=14')).loadMe();
       const u = state.user;
       navigate(u?.isOwner ? '#/admin' : u?.provider ? '#/provider' : '#/my');
     };
@@ -927,7 +927,7 @@ export async function renderResetPassword() {
         if (pass !== confirm) throw new Error('Passwords do not match.');
         await authSupabase.updatePassword(pass, confirm);
         await authSupabase.syncBackend(session.access_token);
-        await (await import('./core.js?v=13')).loadMe();
+        await (await import('./core.js?v=14')).loadMe();
         toast('Password updated', 'You are signed in with your new password.', 'success');
         navigate('#/my');
       } catch (err) { toast('Could not update password', err.message, 'error'); }

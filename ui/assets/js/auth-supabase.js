@@ -8,8 +8,8 @@
  * No fake logins. No password storage. Tokens managed by the official SDK.
  */
 
-import { getSupabase, currentSession, currentProfile } from './supabase-client.js?v=13';
-import { API } from './core.js?v=13';
+import { getSupabase, currentSession, currentProfile } from './supabase-client.js?v=14';
+import { API } from './core.js?v=14';
 
 /* ---------- validation helpers ---------- */
 

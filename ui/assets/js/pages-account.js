@@ -2,9 +2,9 @@
 import {
   state, API, escapeHtml, fmtDate, fmtTime, fmtDateTime, initials, badge, icon, stars,
   layout, pageHero, empty, spinner, modal, toast, navigate, statusLabel, statusTone, parseJson, qsa
-} from './core.js?v=13';
-import * as authSupabase from './auth-supabase.js?v=13';
-import { currentSession } from './supabase-client.js?v=13';
+} from './core.js?v=14';
+import * as authSupabase from './auth-supabase.js?v=14';
+import { currentSession } from './supabase-client.js?v=14';
 
 export async function renderAccountDashboard() {
   if (!state.user) { navigate('#/login'); return layout(`<div class="spin-center"><div class="spinner"></div></div>`); }
@@ -449,7 +449,7 @@ export async function renderAccountSettings() {
       body.marketingOptIn = fd.has('marketingOptIn');
       try {
         await API.put('/api/me', body);
-        await (await import('./core.js?v=13')).loadMe();
+        await (await import('./core.js?v=14')).loadMe();
         toast('Saved', 'Your details have been updated.', 'success');
       } catch (err) { toast('Could not save', err.message, 'error'); }
     });
@@ -462,7 +462,7 @@ export async function renderAccountSettings() {
         await authSupabase.updateMyProfile({ fullName: fd.get('fullName'), phone: fd.get('phone') });
         // Keep the app's own users table consistent too (mirrors to Supabase).
         try { await API.put('/api/me', { fullName: fd.get('fullName') }); } catch { /* non-fatal */ }
-        await (await import('./core.js?v=13')).loadMe();
+        await (await import('./core.js?v=14')).loadMe();
         toast('Saved', 'Your email account profile is updated.', 'success');
       } catch (err) { toast('Could not save', err.message, 'error'); }
     });
@@ -473,7 +473,7 @@ export async function renderAccountSettings() {
       try {
         await API.post('/api/account/delete', { confirm: document.getElementById('deleteConfirm').value });
         toast('Account deleted', 'Your data has been removed.', 'success');
-        await (await import('./core.js?v=13')).logout();
+        await (await import('./core.js?v=14')).logout();
       } catch (e) { toast('Could not delete', e.message, 'error'); }
     });
   }, 0);

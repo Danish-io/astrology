@@ -1,0 +1,3 @@
+API offline.
+Deploy the Aradhana backend (see NETLIFY-DEPLOY.md) and proxy /api/* to it.
+Until the backend is deployed on Render (or similar), the site frontend loads but every API call fails.

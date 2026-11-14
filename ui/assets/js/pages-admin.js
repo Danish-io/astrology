@@ -2,7 +2,7 @@
 import {
   state, API, escapeHtml, fmtDate, fmtTime, fmtDateTime, initials, badge, icon, stars,
   empty, spinner, modal, toast, navigate, statusLabel, statusTone, parseJson, setting, qsa
-} from './core.js?v=13';
+} from './core.js?v=14';
 
 function workspaceLayout(content, active, type = 'admin') {
   const u = state.user || {};

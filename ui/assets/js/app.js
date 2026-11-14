@@ -1,9 +1,9 @@
 'use strict';
-import { register, startRouter, state, loadMe, loadSettings, boot } from './core.js?v=13';
-import * as P from './pages-public.js?v=13';
-import * as B from './pages-booking.js?v=13';
-import * as A from './pages-account.js?v=13';
-import * as D from './pages-admin.js?v=13';
+import { register, startRouter, state, loadMe, loadSettings, boot } from './core.js?v=14';
+import * as P from './pages-public.js?v=14';
+import * as B from './pages-booking.js?v=14';
+import * as A from './pages-account.js?v=14';
+import * as D from './pages-admin.js?v=14';
 
 // Public routing (Website A structure, enhanced with Website B features)
 register('/', (p, q) => P.renderHome());
