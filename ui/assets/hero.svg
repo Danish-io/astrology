@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 660" role="img" aria-labelledby="title desc">
+  <title id="title">A ceremonial arch with a lotus and a lit diya</title>
+  <desc id="desc">Hand-drawn gold line art on a deep maroon ground, with a lotus bloom and an oil lamp at the centre.</desc>
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="34%" r="82%">
+      <stop offset="0" stop-color="#78323f"/>
+      <stop offset="0.55" stop-color="#5a1f2b"/>
+      <stop offset="1" stop-color="#3c121c"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f0d8a4"/>
+      <stop offset="0.45" stop-color="#cfa45c"/>
+      <stop offset="1" stop-color="#9b6d2f"/>
+    </linearGradient>
+    <linearGradient id="flame" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#f3b64c"/>
+      <stop offset="0.6" stop-color="#f8e2a4"/>
+      <stop offset="1" stop-color="#fffaf0"/>
+    </linearGradient>
+    <pattern id="stars" width="90" height="90" patternUnits="userSpaceOnUse">
+      <circle cx="14" cy="22" r="1" fill="#e7c98e" opacity=".55"/>
+      <circle cx="68" cy="12" r=".8" fill="#e7c98e" opacity=".4"/>
+      <circle cx="44" cy="63" r="1.2" fill="#e7c98e" opacity=".3"/>
+      <circle cx="82" cy="78" r=".7" fill="#e7c98e" opacity=".5"/>
+    </pattern>
+  </defs>
+  <rect width="560" height="660" rx="280" fill="url(#bg)"/>
+  <rect width="560" height="660" rx="280" fill="url(#stars)"/>
+  <g fill="none" stroke="url(#gold)" stroke-width="1.15" opacity=".8">
+    <circle cx="280" cy="322" r="244"/>
+    <circle cx="280" cy="322" r="226" stroke-dasharray="2 7"/>
+    <circle cx="280" cy="322" r="186" opacity=".55"/>
+    <circle cx="280" cy="322" r="170" stroke-dasharray="1 9"/>
+    <path d="M280 78c52 0 94 42 94 94v58" />
+    <path d="M280 82c-52 0-94 42-94 94v54" />
+    <path d="M86 322c0-107 87-194 194-194s194 87 194 194" opacity=".5"/>
+  </g>
+  <g stroke="url(#gold)" fill="none" stroke-width="1">
+    <path d="M280 208c20 26 20 49 0 75-20-26-20-49 0-75Z"/>
+    <path d="M244 230c28 6 44 22 48 53-30-5-46-21-48-53Z"/>
+    <path d="M316 230c-28 6-44 22-48 53 30-5 46-21 48-53Z"/>
+    <path d="M226 274c23-3 42 4 54 25-24 4-43-3-54-25Z"/>
+    <path d="M334 274c-23-3-42 4-54 25 24 4 43-3 54-25Z"/>
+    <path d="M280 386c-42 0-76 30-84 70 35-10 65-4 84 22 19-26 49-32 84-22-8-40-42-70-84-70Z" fill="#5f2330"/>
+    <path d="M280 386c-20 20-30 50-28 92 10-13 20-20 28-20s18 7 28 20c2-42-8-72-28-92Z" fill="url(#gold)" opacity=".32"/>
+  </g>
+  <g>
+    <path d="M280 468c-38 16-76 10-108-18 12 39 56 64 108 64s96-25 108-64c-32 28-70 34-108 18Z" fill="#cfa45c" opacity=".22"/>
+    <path d="M160 460c40 20 80 30 120 30s80-10 120-30c-22 54-66 82-120 82s-98-28-120-82Z" fill="none" stroke="url(#gold)" stroke-width="1.3"/>
+    <path d="M236 536c12 8 26 11 44 11s32-3 44-11" stroke="url(#gold)" stroke-width="1.2" fill="none"/>
+  </g>
+  <g transform="translate(280 418)">
+    <ellipse cx="0" cy="8" rx="42" ry="8" fill="#2b0e15" opacity=".5"/>
+    <path d="M-31 0c0 16 14 26 31 26S31 16 31 0c-9 6-20 8-31 8s-22-2-31-8Z" fill="url(#gold)"/>
+    <path d="M-20 -2c5 7 13 10 20 10s15-3 20-10" fill="none" stroke="#5e3520" stroke-width="1"/>
+    <path d="M0 -18c-9-16 3-26 3-40 12 17 10 29-1 43Z" fill="url(#flame)"/>
+    <path d="M2 -22c-4-9 2-16 2-23 6 10 4 18-1 25Z" fill="#fff7de" opacity=".85"/>
+    <ellipse cx="0" cy="-13" rx="10" ry="5" fill="#f2b85c" opacity=".2"/>
+  </g>
+  <g stroke="url(#gold)" fill="none" stroke-width="1" opacity=".75">
+    <path d="M60 530c30-18 58-23 86-14"/>
+    <path d="M500 530c-30-18-58-23-86-14"/>
+    <path d="M70 552c28-10 51-9 72 3"/>
+    <path d="M490 552c-28-10-51-9-72 3"/>
+  </g>
+  <g fill="#e7c98e" opacity=".9">
+    <circle cx="280" cy="58" r="2"/>
+    <path d="M280 47l2 7 7 2-7 2-2 7-2-7-7-2 7-2Z" opacity=".7"/>
+    <circle cx="122" cy="180" r="1.6"/>
+    <circle cx="442" cy="190" r="1.4"/>
+    <circle cx="106" cy="430" r="1.6"/>
+    <circle cx="460" cy="434" r="1.2"/>
+  </g>
+  <text x="280" y="622" text-anchor="middle" font-family="'Cormorant Garamond', Georgia, serif" font-size="14" letter-spacing="5" fill="#e7c98e" opacity=".9">सर्वे भवन्तु सुखिनः</text>
+</svg>

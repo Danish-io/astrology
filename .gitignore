@@ -1,0 +1,17 @@
+# Secrets — never commit
+.env
+*.env
+scripts/.staff-credentials.txt
+
+# Local data (rehydrated from Supabase on deploy)
+data/
+uploads/
+
+# OS / editor noise
+Thumbs.db
+.DS_Store
+node_modules/
+*.log
+
+# backups (historical copies, not needed for the site)
+_backups/

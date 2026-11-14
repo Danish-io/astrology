@@ -1,0 +1,13 @@
+{
+  "name": "Aradhana — Pujas, guidance and sacred gatherings",
+  "short_name": "Aradhana",
+  "description": "Request a puja, a personal jyotish consultation, or a seat at a sacred gathering with Pandit Ramesh Sharma.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fbf6ec",
+  "theme_color": "#571f2b",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "/assets/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

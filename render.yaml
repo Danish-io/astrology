@@ -1,0 +1,25 @@
+# Render blueprint — Aradhana full-stack (Node.js + SQLite + Supabase)
+# Deploy: Render Dashboard → New → Blueprint → select this repo,
+# then fill the three SUPABASE_* secrets when prompted (or add them
+# in the dashboard Environment tab before the first deploy).
+
+services:
+  - type: web
+    name: aradhana
+    runtime: node
+    plan: free
+    region: singapore        # closest free region to India (us-east-1 also fine)
+    buildCommand: npm install
+    startCommand: node server.js
+    healthCheckPath: /api/config
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: HOST
+        value: 0.0.0.0
+      - key: SUPABASE_URL
+        sync: false            # set in Render dashboard: https://osekxnydmludifhxissd.supabase.co
+      - key: SUPABASE_SECRET_KEY
+        sync: false            # set in Render dashboard (secret — never commit)
+      - key: SUPABASE_PUBLISHABLE_KEY
+        sync: false            # set in Render dashboard (safe for browser)

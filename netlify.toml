@@ -1,0 +1,45 @@
+# Aradhana on Netlify — static UI + reverse proxy to the Render backend
+#
+# The app is a Node full-stack site (server.js serves both the UI and /api/*).
+# Netlify cannot run it directly, so this configuration:
+#   1. Serves ui/ as a static site (fast, free).
+#   2. Reverse-proxies /api/* to your Render service (which runs the backend,
+#      SQLite read-cache and the Supabase mirror). The browser sees everything
+#      as one origin; the session cookie keeps working.
+#   3. Falls back all unknown paths to /index.html (client-side hash router —
+#      there is nothing else to fall back to).
+#
+# IMPORTANT — security:
+#   Netlify needs NO secrets. The Supabase Publishable Key is safe for browsers
+#   and is served to the app via /api/config at runtime.
+#   NEVER add SUPABASE_SECRET_KEY or SMTP credentials to Netlify env vars.
+#
+# Deploy:  Netlify → Add new site → Import from GitHub → pick the same repo
+#          → Base directory: (repo root)  ·  No build command needed
+#
+# NOTE: replace the proxy URL with your real Render service URL if it differs
+#       (Render dashboard → your service → Settings → "radically-odd-name.onrender.com").
+
+[build]
+  publish = "ui"
+  command = ""
+
+# 1) API calls go to the Render backend (status 200 = rewrite/proxy, same origin for the browser)
+[[redirects]]
+  from = "/api/*"
+  to = "https://aradhana.onrender.com/api/:splat"
+  status = 200
+  force = true
+
+# 2) Uploads are stored on the backend too
+[[redirects]]
+  from = "/uploads/*"
+  to = "https://aradhana.onrender.com/uploads/:splat"
+  status = 200
+  force = true
+
+# 3) SPA fallback — anything that is not a real file or /api/* serves the app shell
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
