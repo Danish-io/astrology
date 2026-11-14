@@ -2,7 +2,7 @@
 import {
   state, API, escapeHtml, fmtDate, fmtTime, fmtDateTime, initials, badge, icon, stars,
   empty, spinner, modal, toast, navigate, statusLabel, statusTone, parseJson, setting, qsa
-} from './core.js?v=14';
+} from './core.js?v=15';
 
 function workspaceLayout(content, active, type = 'admin') {
   const u = state.user || {};
@@ -76,7 +76,7 @@ export async function renderAdminDashboard() {
   const d = await API.get('/api/admin/dashboard');
   const s = d.stats || {};
   const inner = `
-  <div class="workspace-top"><div><h1>Dashboard</h1><p>Today at a glance Â· ${fmtDate(new Date().toISOString(),'long')}</p></div><div class="workspace-top-actions"><a class="btn btn-primary btn-sm" href="#/admin/inbox">Open inbox</a></div></div>
+  <div class="workspace-top"><div><h1>Dashboard</h1><p>Today at a glance · ${fmtDate(new Date().toISOString(),'long')}</p></div><div class="workspace-top-actions"><a class="btn btn-primary btn-sm" href="#/admin/inbox">Open inbox</a></div></div>
   <div class="kpi-grid">
     <div class="kpi attention"><div class="kpi-label">${icon('clock')} Pending requests</div><strong>${s.pending||0}</strong><small>Awaiting first contact</small></div>
     <div class="kpi"><div class="kpi-label">${icon('calendar')} Today</div><strong>${s.todayBookings||0}</strong><small>Bookings today</small></div>
@@ -84,7 +84,7 @@ export async function renderAdminDashboard() {
     <div class="kpi"><div class="kpi-label">${icon('spark')} Completed</div><strong>${s.completed||0}</strong><small>All time</small></div>
     <div class="kpi"><div class="kpi-label">${icon('user')} Customers</div><strong>${s.customers||0}</strong><small>Registered</small></div>
     <div class="kpi"><div class="kpi-label">${icon('mail')} Enquiries</div><strong>${s.enquiries||0}</strong><small>New</small></div>
-    <div class="kpi"><div class="kpi-label">${icon('spark')} Revenue</div><strong>â‚¹${(s.revenue||0).toLocaleString('en-IN')}</strong><small>This month</small></div>
+    <div class="kpi"><div class="kpi-label">${icon('spark')} Revenue</div><strong>₹${(s.revenue||0).toLocaleString('en-IN')}</strong><small>This month</small></div>
     <div class="kpi"><div class="kpi-label">${icon('star')} Rating</div><strong>${Number(d.panchang?4.8:4.8).toFixed(1)}</strong><small>Average</small></div>
   </div>
   <div class="panel-grid">
@@ -97,7 +97,7 @@ export async function renderAdminDashboard() {
       </div>
       <div class="workspace-panel">
         <div class="workspace-panel-head"><h2>Needs attention</h2><p>Oldest first</p></div>
-        <div class="mini-list">${(d.attention||[]).map(b=>`<div class="mini-row"><div class="grow"><strong>${escapeHtml(b.customerName)}</strong><span>${escapeHtml(b.service?.name||b.type)} Â· ${escapeHtml(b.ref)}</span></div><span>${escapeHtml(b.waiting||'')}</span>${badge(b.status)}<a class="btn btn-ghost btn-sm" href="#/admin/bookings/${b.ref}">Open</a></div>`).join('') || empty('All caught up','No pending requests.')}</div>
+        <div class="mini-list">${(d.attention||[]).map(b=>`<div class="mini-row"><div class="grow"><strong>${escapeHtml(b.customerName)}</strong><span>${escapeHtml(b.service?.name||b.type)} · ${escapeHtml(b.ref)}</span></div><span>${escapeHtml(b.waiting||'')}</span>${badge(b.status)}<a class="btn btn-ghost btn-sm" href="#/admin/bookings/${b.ref}">Open</a></div>`).join('') || empty('All caught up','No pending requests.')}</div>
       </div>
       <div class="workspace-panel">
         <div class="workspace-panel-head"><h2>7-day trend</h2><p>Requests per day</p></div>
@@ -111,7 +111,7 @@ export async function renderAdminDashboard() {
       </div>
       <div class="workspace-panel">
         <div class="workspace-panel-head"><h2>Upcoming gatherings</h2></div>
-        <div class="mini-list">${(d.upcomingEvents||[]).map(e=>`<div class="mini-row"><div class="grow"><strong>${escapeHtml(e.title)}</strong><span>${fmtDate(e.startAt,'short')} Â· ${e.seatsTaken}/${e.capacity} seats</span></div><a class="btn btn-ghost btn-sm" href="#/admin/events">Open</a></div>`).join('') || empty('None scheduled','')}</div>
+        <div class="mini-list">${(d.upcomingEvents||[]).map(e=>`<div class="mini-row"><div class="grow"><strong>${escapeHtml(e.title)}</strong><span>${fmtDate(e.startAt,'short')} · ${e.seatsTaken}/${e.capacity} seats</span></div><a class="btn btn-ghost btn-sm" href="#/admin/events">Open</a></div>`).join('') || empty('None scheduled','')}</div>
       </div>
       <div class="workspace-panel">
         <div class="workspace-panel-head"><h2>Quick links</h2></div>
@@ -137,7 +137,7 @@ export async function renderAdminInbox(query = {}) {
   Object.entries(query).forEach(([k,v]) => { if (v) params.set(k,v); });
   const data = await API.get('/api/admin/inbox' + (params.toString() ? '?'+params.toString() : ''));
   const inner = `
-  <div class="workspace-top"><div><h1>Requests inbox</h1><p>${data.total} bookings Â· page ${data.page} of ${data.pages}</p></div><div class="workspace-top-actions"><a class="btn btn-outline btn-sm" href="#/admin/calendar">Calendar</a></div></div>
+  <div class="workspace-top"><div><h1>Requests inbox</h1><p>${data.total} bookings · page ${data.page} of ${data.pages}</p></div><div class="workspace-top-actions"><a class="btn btn-outline btn-sm" href="#/admin/calendar">Calendar</a></div></div>
   <div class="filter-bar">
     <select id="statusFilter"><option value="ALL">All statuses</option>${Object.keys(data.counts||{}).map(s=>`<option value="${s}" ${query.status===s?'selected':''}>${statusLabel(s)} (${data.counts[s]})</option>`).join('')}</select>
     <select id="typeFilter"><option value="">All types</option><option value="PUJA" ${query.type==='PUJA'?'selected':''}>Puja</option><option value="CONSULTATION" ${query.type==='CONSULTATION'?'selected':''}>Consultation</option><option value="EVENT" ${query.type==='EVENT'?'selected':''}>Event</option></select>
@@ -188,7 +188,7 @@ export async function renderAdminBooking(params) {
   const data = await API.get(`/api/admin/bookings/${params.ref}`);
   const b = data.booking;
   const inner = `
-  <div class="workspace-top"><div><h1>${escapeHtml(b.ref)}</h1><p>${escapeHtml(b.service?.name||b.type)} Â· ${escapeHtml(b.statusLabel)}</p></div><div class="workspace-top-actions"><a class="btn btn-outline btn-sm" href="#/admin/inbox">â† Inbox</a></div></div>
+  <div class="workspace-top"><div><h1>${escapeHtml(b.ref)}</h1><p>${escapeHtml(b.service?.name||b.type)} · ${escapeHtml(b.statusLabel)}</p></div><div class="workspace-top-actions"><a class="btn btn-outline btn-sm" href="#/admin/inbox">← Inbox</a></div></div>
   <div class="request-layout">
     <div>
       <div class="workspace-panel">
@@ -196,32 +196,32 @@ export async function renderAdminBooking(params) {
         <div class="request-meta">
           <div><dt>Customer</dt><dd>${escapeHtml(b.customerName)}</dd></div>
           <div><dt>Phone</dt><dd>${escapeHtml(b.customerPhone)}</dd></div>
-          <div><dt>Email</dt><dd>${escapeHtml(b.customerEmail||'â€”')}</dd></div>
-          <div><dt>Channel</dt><dd>${escapeHtml(b.preferredContactChannel)} Â· ${escapeHtml(b.preferredCallWindow||'any')}</dd></div>
+          <div><dt>Email</dt><dd>${escapeHtml(b.customerEmail||'—')}</dd></div>
+          <div><dt>Channel</dt><dd>${escapeHtml(b.preferredContactChannel)} · ${escapeHtml(b.preferredCallWindow||'any')}</dd></div>
           <div><dt>Service</dt><dd>${escapeHtml(b.service?.name||b.type)}</dd></div>
-          <div><dt>Provider</dt><dd>${escapeHtml(b.provider?.name||'â€”')}</dd></div>
+          <div><dt>Provider</dt><dd>${escapeHtml(b.provider?.name||'—')}</dd></div>
           <div><dt>Preferred time</dt><dd>${fmtDateTime(b.preferredStartAt)}</dd></div>
-          <div><dt>Confirmed time</dt><dd>${b.confirmedStartAt?fmtDateTime(b.confirmedStartAt):'â€”'}</dd></div>
+          <div><dt>Confirmed time</dt><dd>${b.confirmedStartAt?fmtDateTime(b.confirmedStartAt):'—'}</dd></div>
           <div><dt>Participants</dt><dd>${b.participants}</dd></div>
           <div><dt>Payment state</dt><dd>${escapeHtml(b.paymentState)}</dd></div>
           ${b.specialRequests?`<div class="full"><dt>Special requests</dt><dd>${escapeHtml(b.specialRequests)}</dd></div>`:''}
-          ${b.puja?`<div class="full"><dt>Puja</dt><dd>${escapeHtml(b.puja.locationType.replace('_',' '))} Â· ${escapeHtml(b.puja.occasion)} Â· ${escapeHtml(b.puja.samagriBy)} samagri Â· ${b.puja.attendeeEstimate} attendees${b.puja.liveStream?' Â· live stream':''}</dd></div>${b.puja.address?`<div class="full"><dt>Address</dt><dd>${escapeHtml(JSON.stringify(b.puja.address))}</dd></div>`:''}`:''}
-          ${b.consultation?`<div class="full"><dt>Consultation</dt><dd>${escapeHtml(b.consultation.mode)} Â· ${escapeHtml((b.consultation.topics||[]).join(', '))} Â· ${b.consultation.duration} min${b.consultation.question?' Â· â€œ'+escapeHtml(b.consultation.question)+'â€':''}</dd></div>`:''}
-          ${b.birthDetails?.length?`<div class="full"><dt>Birth details</dt><dd>${b.birthDetails.map(p=>escapeHtml(p.name+' Â· '+p.dateOfBirth+' Â· '+p.place)).join('; ')}</dd></div>`:''}
+          ${b.puja?`<div class="full"><dt>Puja</dt><dd>${escapeHtml(b.puja.locationType.replace('_',' '))} · ${escapeHtml(b.puja.occasion)} · ${escapeHtml(b.puja.samagriBy)} samagri · ${b.puja.attendeeEstimate} attendees${b.puja.liveStream?' · live stream':''}</dd></div>${b.puja.address?`<div class="full"><dt>Address</dt><dd>${escapeHtml(JSON.stringify(b.puja.address))}</dd></div>`:''}`:''}
+          ${b.consultation?`<div class="full"><dt>Consultation</dt><dd>${escapeHtml(b.consultation.mode)} · ${escapeHtml((b.consultation.topics||[]).join(', '))} · ${b.consultation.duration} min${b.consultation.question?' · “'+escapeHtml(b.consultation.question)+'”':''}</dd></div>`:''}
+          ${b.birthDetails?.length?`<div class="full"><dt>Birth details</dt><dd>${b.birthDetails.map(p=>escapeHtml(p.name+' · '+p.dateOfBirth+' · '+p.place)).join('; ')}</dd></div>`:''}
         </div>
       </div>
       <div class="workspace-panel">
         <div class="workspace-panel-head"><h2>Timeline</h2></div>
-        <div class="timeline compact">${(b.history||[]).map(h=>`<div class="timeline-item"><div class="timeline-dot"></div><div><strong>${escapeHtml(h.toLabel)}</strong><span> Â· ${fmtDateTime(h.at)}</span><p>${escapeHtml(h.reason||'')}</p></div></div>`).join('')}</div>
+        <div class="timeline compact">${(b.history||[]).map(h=>`<div class="timeline-item"><div class="timeline-dot"></div><div><strong>${escapeHtml(h.toLabel)}</strong><span> · ${fmtDateTime(h.at)}</span><p>${escapeHtml(h.reason||'')}</p></div></div>`).join('')}</div>
       </div>
       <div class="workspace-panel">
         <div class="workspace-panel-head"><h2>Notes</h2></div>
         ${(b.notes||[]).map(n=>`<div class="note-item"><strong>${escapeHtml(n.author_name||'Team')}${n.is_pinned?' <span class="pin-tag">pinned</span>':''}</strong><p>${escapeHtml(n.note)}</p><span>${fmtDateTime(n.created_at)}</span></div>`).join('') || `<p class="muted small">No notes yet.</p>`}
-        <form id="noteForm" style="margin-top:10px"><div class="field"><textarea name="note" placeholder="Add an internal noteâ€¦" required></textarea></div><button class="btn btn-outline btn-sm" type="submit">Add note</button></form>
+        <form id="noteForm" style="margin-top:10px"><div class="field"><textarea name="note" placeholder="Add an internal note…" required></textarea></div><button class="btn btn-outline btn-sm" type="submit">Add note</button></form>
       </div>
       <div class="workspace-panel">
         <div class="workspace-panel-head"><h2>Contact log</h2></div>
-        ${(b.contactAttempts||[]).map(c=>`<div class="note-item"><strong>${escapeHtml(c.channel)} Â· ${escapeHtml(c.outcome)}</strong><p>${escapeHtml(c.summary||'')}</p><span>${escapeHtml(c.staff_name||'')} Â· ${fmtDateTime(c.created_at)}</span></div>`).join('') || `<p class="muted small">No contact attempts yet.</p>`}
+        ${(b.contactAttempts||[]).map(c=>`<div class="note-item"><strong>${escapeHtml(c.channel)} · ${escapeHtml(c.outcome)}</strong><p>${escapeHtml(c.summary||'')}</p><span>${escapeHtml(c.staff_name||'')} · ${fmtDateTime(c.created_at)}</span></div>`).join('') || `<p class="muted small">No contact attempts yet.</p>`}
         <form id="contactForm" style="margin-top:10px">
           <div class="field-row">
             <div class="field"><label>Channel</label><select name="channel"><option>CALL</option><option>WHATSAPP</option><option>SMS</option><option>EMAIL</option></select></div>
@@ -248,19 +248,19 @@ export async function renderAdminBooking(params) {
         <div class="workspace-panel-head"><h2>Record payment</h2><p>Offline note only</p></div>
         <form id="payForm">
           <div class="field-row">
-            <div class="field"><label>Agreed (â‚¹)</label><input name="agreedAmount" type="number" min="0" value="0" /></div>
-            <div class="field"><label>Received (â‚¹)</label><input name="receivedAmount" type="number" min="0" value="0" /></div>
+            <div class="field"><label>Agreed (₹)</label><input name="agreedAmount" type="number" min="0" value="0" /></div>
+            <div class="field"><label>Received (₹)</label><input name="receivedAmount" type="number" min="0" value="0" /></div>
           </div>
           <div class="field"><label>Mode</label><select name="mode"><option>UPI</option><option>CASH</option><option>BANK_TRANSFER</option><option>OTHER</option></select></div>
           <div class="field"><label>Reference note</label><input name="referenceNote" placeholder="UPI ref, receipt no." /></div>
           <div class="field"><label>Remarks</label><textarea name="remarks"></textarea></div>
           <button class="btn btn-outline btn-sm btn-block" type="submit">Save payment note</button>
         </form>
-        ${(b.payments||[]).length ? `<div style="margin-top:10px">${(b.payments||[]).map(p=>`<div class="note-item"><strong>â‚¹${(p.received_amount||0).toLocaleString('en-IN')} / â‚¹${(p.agreed_amount||0).toLocaleString('en-IN')}</strong><p>${escapeHtml(p.mode)} Â· ${escapeHtml(p.reference_note||'')} Â· ${escapeHtml(p.remarks||'')}</p><span>${fmtDate(p.created_at,'date')}</span></div>`).join('')}</div>` : ''}
+        ${(b.payments||[]).length ? `<div style="margin-top:10px">${(b.payments||[]).map(p=>`<div class="note-item"><strong>₹${(p.received_amount||0).toLocaleString('en-IN')} / ₹${(p.agreed_amount||0).toLocaleString('en-IN')}</strong><p>${escapeHtml(p.mode)} · ${escapeHtml(p.reference_note||'')} · ${escapeHtml(p.remarks||'')}</p><span>${fmtDate(p.created_at,'date')}</span></div>`).join('')}</div>` : ''}
       </div>
       <div class="workspace-panel">
         <div class="workspace-panel-head"><h2>Notifications</h2></div>
-        <div class="mini-list">${(b.notifications||[]).map(n=>`<div class="mini-row"><div class="grow"><strong>${escapeHtml(n.template_code)}</strong><span>${escapeHtml(n.channel)} Â· ${escapeHtml(n.delivery_status||n.status)}</span></div><span>${fmtDate(n.created_at,'short')}</span></div>`).join('') || empty('None','')}</div>
+        <div class="mini-list">${(b.notifications||[]).map(n=>`<div class="mini-row"><div class="grow"><strong>${escapeHtml(n.template_code)}</strong><span>${escapeHtml(n.channel)} · ${escapeHtml(n.delivery_status||n.status)}</span></div><span>${fmtDate(n.created_at,'short')}</span></div>`).join('') || empty('None','')}</div>
       </div>
     </div>
   </div>`;
@@ -352,7 +352,7 @@ export async function renderAdminCalendar(query = {}) {
     </div>`);
   }
   const inner = `
-  <div class="workspace-top"><div><h1>Calendar</h1><p>${fmtDate(from+'T12:00:00+05:30','long')} â€” ${fmtDate(to+'T12:00:00+05:30','long')}</p></div>
+  <div class="workspace-top"><div><h1>Calendar</h1><p>${fmtDate(from+'T12:00:00+05:30','long')} — ${fmtDate(to+'T12:00:00+05:30','long')}</p></div>
     <div class="workspace-top-actions">
       <input type="month" id="monthPick" value="${escapeHtml(from.slice(0,7))}" style="min-height:36px;border:1px solid var(--line);border-radius:8px;padding:0 10px;background:var(--paper)" />
     </div>
@@ -363,7 +363,7 @@ export async function renderAdminCalendar(query = {}) {
   </div>
   <div class="workspace-panel">
     <div class="workspace-panel-head"><h2>Agenda</h2><p>${bookings.length} bookings in range</p></div>
-    <div class="agenda-list">${bookings.map(b=>`<div class="agenda-row"><div class="agenda-time">${fmtTime(b.startAt)}<br>${fmtDate(b.startAt,'short')}</div><div class="agenda-body"><strong>${escapeHtml(b.customerName)} Â· ${escapeHtml(b.service||'')}</strong><span>${escapeHtml(b.ref)} Â· ${escapeHtml(b.statusLabel)}${b.confirmed?' Â· confirmed':''}</span></div><a class="btn btn-ghost btn-sm" href="#/admin/bookings/${b.ref}">Open</a></div>`).join('') || empty('No bookings','')}</div>
+    <div class="agenda-list">${bookings.map(b=>`<div class="agenda-row"><div class="agenda-time">${fmtTime(b.startAt)}<br>${fmtDate(b.startAt,'short')}</div><div class="agenda-body"><strong>${escapeHtml(b.customerName)} · ${escapeHtml(b.service||'')}</strong><span>${escapeHtml(b.ref)} · ${escapeHtml(b.statusLabel)}${b.confirmed?' · confirmed':''}</span></div><a class="btn btn-ghost btn-sm" href="#/admin/bookings/${b.ref}">Open</a></div>`).join('') || empty('No bookings','')}</div>
   </div>`;
   const html = workspaceLayout(inner,'calendar','admin');
   wireWorkspace();
@@ -403,7 +403,7 @@ export async function renderAdminAvailability() {
           </div>
           <button class="btn btn-primary btn-sm" type="submit">Add window</button>
         </form>
-        <div class="week-grid">${weekdays.map((w,i)=>`<div class="week-row"><div class="weekday">${w}</div><div class="rule-chips">${(rulesByDay[i]||[]).map(r=>`<span class="rule-chip">${escapeHtml(r.startTime)}â€“${escapeHtml(r.endTime)} Â· ${r.duration}m Â· ${escapeHtml(r.serviceType)} <button class="rm" data-rule="${r.id}">Ã—</button></span>`).join('') || '<span class="muted small">No windows</span>'}</div></div>`).join('')}</div>
+        <div class="week-grid">${weekdays.map((w,i)=>`<div class="week-row"><div class="weekday">${w}</div><div class="rule-chips">${(rulesByDay[i]||[]).map(r=>`<span class="rule-chip">${escapeHtml(r.startTime)}–${escapeHtml(r.endTime)} · ${r.duration}m · ${escapeHtml(r.serviceType)} <button class="rm" data-rule="${r.id}">×</button></span>`).join('') || '<span class="muted small">No windows</span>'}</div></div>`).join('')}</div>
       </div>
       <div class="workspace-panel">
         <div class="workspace-panel-head"><h2>Exceptions</h2><p>Blocked or extra hours.</p></div>
@@ -416,7 +416,7 @@ export async function renderAdminAvailability() {
           <div class="field"><label>Reason</label><input name="reason" /></div>
           <button class="btn btn-outline btn-sm" type="submit">Add exception</button>
         </form>
-        ${(data.exceptions||[]).map(e=>`<div class="exception-row"><div><strong>${escapeHtml(e.type)}</strong><span>${fmtDateTime(e.startAt)} â†’ ${fmtDateTime(e.endAt)}${e.reason?' Â· '+escapeHtml(e.reason):''}</span></div><button class="icon-btn danger" data-exc="${e.id}">${icon('trash')}</button></div>`).join('') || empty('No exceptions','')}
+        ${(data.exceptions||[]).map(e=>`<div class="exception-row"><div><strong>${escapeHtml(e.type)}</strong><span>${fmtDateTime(e.startAt)} → ${fmtDateTime(e.endAt)}${e.reason?' · '+escapeHtml(e.reason):''}</span></div><button class="icon-btn danger" data-exc="${e.id}">${icon('trash')}</button></div>`).join('') || empty('No exceptions','')}
       </div>
     </div>
     <div>
@@ -426,7 +426,7 @@ export async function renderAdminAvailability() {
       </div>
       <div class="workspace-panel">
         <div class="workspace-panel-head"><h2>Profile settings</h2></div>
-        <p class="muted small">Min notice: ${data.profile?.minNoticeHours}h Â· Buffer: ${data.profile?.bufferMinutes}m Â· Offers online: ${data.profile?.offersOnline?'yes':'no'} Â· in person: ${data.profile?.offersInPerson?'yes':'no'}</p>
+        <p class="muted small">Min notice: ${data.profile?.minNoticeHours}h · Buffer: ${data.profile?.bufferMinutes}m · Offers online: ${data.profile?.offersOnline?'yes':'no'} · in person: ${data.profile?.offersInPerson?'yes':'no'}</p>
       </div>
     </div>
   </div>`;
@@ -476,8 +476,8 @@ export async function renderAdminServices() {
     <div class="table-wrap"><table class="data-table"><thead><tr><th>Service</th><th>Type</th><th>Category</th><th>Duration</th><th>Featured</th><th>Active</th><th>Bookings</th><th></th></tr></thead><tbody>
     ${data.services.map(s=>`<tr>
       <td><div class="cell-main">${escapeHtml(s.name)}</div><div class="cell-sub">${escapeHtml(s.slug)}</div></td>
-      <td>${escapeHtml(s.type)}</td><td>${escapeHtml(s.category||'â€”')}</td><td>${s.duration}m</td>
-      <td>${s.featured?'â˜…':''}</td><td>${s.active?'Yes':'No'}</td><td>${s.bookings}</td>
+      <td>${escapeHtml(s.type)}</td><td>${escapeHtml(s.category||'—')}</td><td>${s.duration}m</td>
+      <td>${s.featured?'★':''}</td><td>${s.active?'Yes':'No'}</td><td>${s.bookings}</td>
       <td><div class="table-actions"><button class="icon-btn" data-edit="${s.id}">${icon('edit')}</button><button class="icon-btn danger" data-del="${s.id}">${icon('trash')}</button></div></td>
     </tr>`).join('')}
     </tbody></table></div>
@@ -632,19 +632,19 @@ export async function renderAdminEventRegistrations(params) {
   if (!state.user?.isStaff) { navigate('#/login'); return workspaceLayout(spinner(),'events'); }
   const data = await API.get(`/api/admin/events/${params.id}/registrations`);
   const inner = `
-  <div class="workspace-top"><div><h1>Registrations</h1><p>${escapeHtml(data.event.title)} Â· ${data.registrations.length} registrations</p></div><div class="workspace-top-actions"><a class="btn btn-outline btn-sm" href="#/admin/events">â† Gatherings</a></div></div>
+  <div class="workspace-top"><div><h1>Registrations</h1><p>${escapeHtml(data.event.title)} · ${data.registrations.length} registrations</p></div><div class="workspace-top-actions"><a class="btn btn-outline btn-sm" href="#/admin/events">← Gatherings</a></div></div>
   <div class="workspace-panel" style="padding:0">
     <div class="table-wrap"><table class="data-table"><thead><tr><th>Ref</th><th>Customer</th><th>Seats</th><th>Mode</th><th>Status</th><th>Checked in</th><th></th></tr></thead><tbody>
     ${data.registrations.map(r=>`<tr>
       <td class="cell-main">${escapeHtml(r.ref)}</td>
       <td><div class="cell-main">${escapeHtml(r.name)}</div><div class="cell-sub">${escapeHtml(r.phone)}</div></td>
       <td>${r.seats}</td><td>${escapeHtml(r.mode)}</td><td>${escapeHtml(r.status)}</td>
-      <td class="cell-sub">${r.checkedInAt?fmtDateTime(r.checkedInAt):'â€”'}</td>
+      <td class="cell-sub">${r.checkedInAt?fmtDateTime(r.checkedInAt):'—'}</td>
       <td>${r.checkedInAt?'':`<button class="btn btn-outline btn-sm" data-checkin="${r.id}">Check in</button>`}</td>
     </tr>`).join('') || `<tr><td colspan="7">${empty('No registrations','')}</td></tr>`}
     </tbody></table></div>
   </div>
-  ${data.waitlist?.length?`<div class="workspace-panel"><div class="workspace-panel-head"><h2>Waitlist</h2></div><div class="mini-list">${data.waitlist.map(w=>`<div class="mini-row"><div class="grow"><strong>${escapeHtml(w.customer_name)}</strong><span>${w.seats_wanted} seats Â· position ${w.position}</span></div><span>${escapeHtml(w.customer_phone)}</span></div>`).join('')}</div></div>`:''}`;
+  ${data.waitlist?.length?`<div class="workspace-panel"><div class="workspace-panel-head"><h2>Waitlist</h2></div><div class="mini-list">${data.waitlist.map(w=>`<div class="mini-row"><div class="grow"><strong>${escapeHtml(w.customer_name)}</strong><span>${w.seats_wanted} seats · position ${w.position}</span></div><span>${escapeHtml(w.customer_phone)}</span></div>`).join('')}</div></div>`:''}`;
   const html = workspaceLayout(inner,'events','admin');
   wireWorkspace();
   setTimeout(() => {
@@ -671,10 +671,10 @@ export async function renderAdminCustomers(query = {}) {
     <div class="table-wrap"><table class="data-table"><thead><tr><th>Name</th><th>Phone</th><th>City</th><th>Bookings</th><th>Completed</th><th>Last booking</th><th></th></tr></thead><tbody>
     ${data.customers.map(c=>`<tr>
       <td class="cell-main">${escapeHtml(c.fullName)}</td>
-      <td class="cell-sub">${escapeHtml(c.phone||'â€”')}</td>
-      <td>${escapeHtml(c.city||'â€”')}</td>
+      <td class="cell-sub">${escapeHtml(c.phone||'—')}</td>
+      <td>${escapeHtml(c.city||'—')}</td>
       <td>${c.bookingCount}</td><td>${c.completedCount}</td>
-      <td class="cell-sub">${c.lastBookingAt?fmtDate(c.lastBookingAt,'short'):'â€”'}</td>
+      <td class="cell-sub">${c.lastBookingAt?fmtDate(c.lastBookingAt,'short'):'—'}</td>
       <td><a class="btn btn-ghost btn-sm" href="#/admin/customers/${c.id}">Open</a></td>
     </tr>`).join('') || `<tr><td colspan="7">${empty('No customers','')}</td></tr>`}
     </tbody></table></div>
@@ -695,7 +695,7 @@ export async function renderAdminCustomerDetail(params) {
   const data = await API.get(`/api/admin/customers/${params.id}`);
   const c = data.customer;
   const inner = `
-  <div class="workspace-top"><div><h1>${escapeHtml(c.fullName)}</h1><p>${escapeHtml(c.phone||'')} Â· ${escapeHtml(c.email||'')}</p></div><div class="workspace-top-actions"><a class="btn btn-outline btn-sm" href="#/admin/customers">â† Customers</a></div></div>
+  <div class="workspace-top"><div><h1>${escapeHtml(c.fullName)}</h1><p>${escapeHtml(c.phone||'')} · ${escapeHtml(c.email||'')}</p></div><div class="workspace-top-actions"><a class="btn btn-outline btn-sm" href="#/admin/customers">← Customers</a></div></div>
   <div class="panel-grid">
     <div>
       <div class="workspace-panel"><div class="workspace-panel-head"><h2>Bookings</h2></div>
@@ -706,13 +706,13 @@ export async function renderAdminCustomerDetail(params) {
     </div>
     <div>
       <div class="workspace-panel"><div class="workspace-panel-head"><h2>Profiles</h2></div>
-        <div class="mini-list">${data.profiles.map(p=>`<div class="mini-row"><div class="grow"><strong>${escapeHtml(p.fullName)}</strong><span>${fmtDate(p.dateOfBirth,'date')} Â· ${escapeHtml(p.placeOfBirth)}</span></div></div>`).join('') || empty('None','')}</div>
+        <div class="mini-list">${data.profiles.map(p=>`<div class="mini-row"><div class="grow"><strong>${escapeHtml(p.fullName)}</strong><span>${fmtDate(p.dateOfBirth,'date')} · ${escapeHtml(p.placeOfBirth)}</span></div></div>`).join('') || empty('None','')}</div>
       </div>
       <div class="workspace-panel"><div class="workspace-panel-head"><h2>Addresses</h2></div>
         <div class="mini-list">${data.addresses.map(a=>`<div class="mini-row"><div class="grow"><strong>${escapeHtml(a.label)}</strong><span>${escapeHtml(a.line1)}, ${escapeHtml(a.city)}</span></div></div>`).join('') || empty('None','')}</div>
       </div>
       <div class="workspace-panel"><div class="workspace-panel-head"><h2>Consents</h2></div>
-        <div class="mini-list">${data.consents.map(c=>`<div class="mini-row"><div class="grow"><strong>${escapeHtml(c.consent_type)}</strong><span>v${escapeHtml(c.policy_version)} Â· ${fmtDate(c.granted_at,'short')}</span></div></div>`).join('') || empty('None','')}</div>
+        <div class="mini-list">${data.consents.map(c=>`<div class="mini-row"><div class="grow"><strong>${escapeHtml(c.consent_type)}</strong><span>v${escapeHtml(c.policy_version)} · ${fmtDate(c.granted_at,'short')}</span></div></div>`).join('') || empty('None','')}</div>
       </div>
     </div>
   </div>`;
@@ -826,7 +826,7 @@ export async function renderAdminMessages() {
       const r = rev.reviews.find(x=>x.id===b.dataset.rev);
       const m = modal({
         title: 'Review',
-        body: `<p><strong>${escapeHtml(r.name)}</strong> Â· ${stars(r.rating)}</p><p style="margin:8px 0">${escapeHtml(r.comment)}</p>
+        body: `<p><strong>${escapeHtml(r.name)}</strong> · ${stars(r.rating)}</p><p style="margin:8px 0">${escapeHtml(r.comment)}</p>
           <div class="field"><label>Reply from Pandit ji</label><textarea id="replyText">${escapeHtml(r.reply||'')}</textarea></div>
           <div class="check-line"><input type="checkbox" id="pubCheck" ${r.published?'checked':''} /><span>Published on the site</span></div>`,
         actions: `<button class="btn btn-ghost" id="revCancel">Cancel</button><button class="btn btn-primary" id="revSave">Save</button>`,
@@ -848,7 +848,7 @@ export async function renderAdminNotifications() {
   if (!state.user?.isStaff) { navigate('#/login'); return workspaceLayout(spinner(),'notifications'); }
   const data = await API.get('/api/admin/notifications');
   const inner = `
-  <div class="workspace-top"><div><h1>Notifications</h1><p>${data.stats.pending} pending Â· ${data.stats.delivered} delivered Â· ${data.stats.recipients} recipients</p></div>
+  <div class="workspace-top"><div><h1>Notifications</h1><p>${data.stats.pending} pending · ${data.stats.delivered} delivered · ${data.stats.recipients} recipients</p></div>
     <div class="workspace-top-actions"><button class="btn btn-outline btn-sm" id="processBtn">Process outbox</button></div></div>
   <div class="panel-grid">
     <div>
@@ -861,14 +861,14 @@ export async function renderAdminNotifications() {
       <div class="workspace-panel">
         <div class="workspace-panel-head"><h2>Outbox</h2></div>
         <div class="table-wrap"><table class="data-table"><thead><tr><th>Code</th><th>Channel</th><th>To</th><th>Booking</th><th>Status</th><th>Sent</th></tr></thead><tbody>
-        ${data.outbox.map(o=>`<tr><td class="cell-main">${escapeHtml(o.code)}</td><td>${escapeHtml(o.channel)}</td><td class="cell-sub">${escapeHtml(o.address)}</td><td class="cell-sub">${escapeHtml(o.bookingRef||'â€”')}</td><td>${escapeHtml(o.status)}</td><td class="cell-sub">${o.sentAt?fmtDate(o.sentAt,'short'):'â€”'}</td></tr>`).join('') || `<tr><td colspan="6">${empty('Empty','')}</td></tr>`}
+        ${data.outbox.map(o=>`<tr><td class="cell-main">${escapeHtml(o.code)}</td><td>${escapeHtml(o.channel)}</td><td class="cell-sub">${escapeHtml(o.address)}</td><td class="cell-sub">${escapeHtml(o.bookingRef||'—')}</td><td>${escapeHtml(o.status)}</td><td class="cell-sub">${o.sentAt?fmtDate(o.sentAt,'short'):'—'}</td></tr>`).join('') || `<tr><td colspan="6">${empty('Empty','')}</td></tr>`}
         </tbody></table></div>
       </div>
     </div>
     <div>
       <div class="workspace-panel">
         <div class="workspace-panel-head"><h2>Templates</h2></div>
-        <div class="mini-list">${data.templates.map(t=>`<div class="mini-row"><div class="grow"><strong>${escapeHtml(t.code)}</strong><span>${escapeHtml(t.channel)} Â· ${escapeHtml((t.subject||'').slice(0,40))}</span></div><button class="btn btn-ghost btn-sm" data-tpl="${t.id}">Edit</button></div>`).join('')}</div>
+        <div class="mini-list">${data.templates.map(t=>`<div class="mini-row"><div class="grow"><strong>${escapeHtml(t.code)}</strong><span>${escapeHtml(t.channel)} · ${escapeHtml((t.subject||'').slice(0,40))}</span></div><button class="btn btn-ghost btn-sm" data-tpl="${t.id}">Edit</button></div>`).join('')}</div>
       </div>
     </div>
   </div>`;
@@ -934,7 +934,7 @@ export async function renderAdminReports(query = {}) {
   const data = await API.get(`/api/admin/reports?from=${from}&to=${to}`);
   const t = data.totals || {};
   const inner = `
-  <div class="workspace-top"><div><h1>Reports</h1><p>${fmtDate(from+'T12:00:00+05:30','date')} â€” ${fmtDate(to+'T12:00:00+05:30','date')}</p></div>
+  <div class="workspace-top"><div><h1>Reports</h1><p>${fmtDate(from+'T12:00:00+05:30','date')} — ${fmtDate(to+'T12:00:00+05:30','date')}</p></div>
     <div class="workspace-top-actions">
       <input type="date" id="fromDate" value="${escapeHtml(from)}" style="min-height:36px;border:1px solid var(--line);border-radius:8px;padding:0 10px;background:var(--paper)" />
       <input type="date" id="toDate" value="${escapeHtml(to)}" style="min-height:36px;border:1px solid var(--line);border-radius:8px;padding:0 10px;background:var(--paper)" />
@@ -948,8 +948,8 @@ export async function renderAdminReports(query = {}) {
     <div class="kpi"><div class="kpi-label">Completed</div><strong>${t.completed||0}</strong></div>
     <div class="kpi"><div class="kpi-label">Cancelled</div><strong>${t.cancelled||0}</strong></div>
     <div class="kpi"><div class="kpi-label">Completion rate</div><strong>${t.completionRate||0}%</strong></div>
-    <div class="kpi"><div class="kpi-label">Agreed</div><strong>â‚¹${(t.totalAgreed||0).toLocaleString('en-IN')}</strong></div>
-    <div class="kpi"><div class="kpi-label">Received</div><strong>â‚¹${(t.totalReceived||0).toLocaleString('en-IN')}</strong></div>
+    <div class="kpi"><div class="kpi-label">Agreed</div><strong>₹${(t.totalAgreed||0).toLocaleString('en-IN')}</strong></div>
+    <div class="kpi"><div class="kpi-label">Received</div><strong>₹${(t.totalReceived||0).toLocaleString('en-IN')}</strong></div>
     <div class="kpi"><div class="kpi-label">Avg rating</div><strong>${t.avgRating||0}</strong><small>${t.reviewCount||0} reviews</small></div>
   </div>
   <div class="panel-grid">
@@ -1040,7 +1040,7 @@ export async function renderAdminAudit() {
   if (!state.user?.isOwner) { navigate('#/login'); return workspaceLayout(spinner(),'settings'); }
   const data = await API.get('/api/admin/audit');
   const inner = `
-  <div class="workspace-top"><div><h1>Audit log</h1><p>${data.total} entries</p></div><div class="workspace-top-actions"><a class="btn btn-outline btn-sm" href="#/admin/settings">â† Settings</a></div></div>
+  <div class="workspace-top"><div><h1>Audit log</h1><p>${data.total} entries</p></div><div class="workspace-top-actions"><a class="btn btn-outline btn-sm" href="#/admin/settings">← Settings</a></div></div>
   <div class="workspace-panel" style="padding:0">
     <div class="table-wrap"><table class="data-table"><thead><tr><th>When</th><th>User</th><th>Action</th><th>Entity</th><th>IP</th></tr></thead><tbody>
     ${data.logs.map(l=>`<tr><td class="cell-sub">${fmtDateTime(l.createdAt)}</td><td>${escapeHtml(l.userName)}</td><td class="cell-main">${escapeHtml(l.action)}</td><td class="cell-sub">${escapeHtml(l.entityType||'')} ${escapeHtml(l.entityId||'')}</td><td class="cell-sub">${escapeHtml(l.ip||'')}</td></tr>`).join('') || `<tr><td colspan="5">${empty('No entries','')}</td></tr>`}
@@ -1057,7 +1057,7 @@ export async function renderProviderDashboard() {
   const d = await API.get('/api/provider/dashboard');
   const p = d.profile || {};
   const inner = `
-  <div class="workspace-top"><div><h1>Namaste, ${escapeHtml(state.user.fullName.split(' ')[0])}</h1><p>${escapeHtml(p.headline||'')} Â· ${escapeHtml(p.city||'')}</p></div></div>
+  <div class="workspace-top"><div><h1>Namaste, ${escapeHtml(state.user.fullName.split(' ')[0])}</h1><p>${escapeHtml(p.headline||'')} · ${escapeHtml(p.city||'')}</p></div></div>
   <div class="kpi-grid">
     <div class="kpi attention"><div class="kpi-label">${icon('clock')} Pending</div><strong>${d.counts.pending}</strong><small>Awaiting contact</small></div>
     <div class="kpi"><div class="kpi-label">${icon('check')} Confirmed</div><strong>${d.counts.confirmed}</strong><small>Upcoming</small></div>
@@ -1068,17 +1068,17 @@ export async function renderProviderDashboard() {
     <div>
       <div class="workspace-panel">
         <div class="workspace-panel-head"><h2>Today</h2><p>${fmtDate(new Date().toISOString(),'long')}</p></div>
-        <div class="mini-list">${(d.today||[]).map(b=>`<div class="mini-row"><div class="grow"><strong>${escapeHtml(b.name)}</strong><span>${escapeHtml(b.service)} Â· ${escapeHtml(b.time)}</span></div>${badge(b.status)}<a class="btn btn-ghost btn-sm" href="#/provider/bookings/${b.ref}">Open</a></div>`).join('') || empty('Nothing scheduled today','')}</div>
+        <div class="mini-list">${(d.today||[]).map(b=>`<div class="mini-row"><div class="grow"><strong>${escapeHtml(b.name)}</strong><span>${escapeHtml(b.service)} · ${escapeHtml(b.time)}</span></div>${badge(b.status)}<a class="btn btn-ghost btn-sm" href="#/provider/bookings/${b.ref}">Open</a></div>`).join('') || empty('Nothing scheduled today','')}</div>
       </div>
       <div class="workspace-panel">
         <div class="workspace-panel-head"><h2>Needs attention</h2></div>
-        <div class="mini-list">${(d.attention||[]).map(b=>`<div class="mini-row"><div class="grow"><strong>${escapeHtml(b.customerName)}</strong><span>${escapeHtml(b.service?.name||b.type)} Â· ${escapeHtml(b.ref)}</span></div>${badge(b.status)}<a class="btn btn-ghost btn-sm" href="#/provider/bookings/${b.ref}">Open</a></div>`).join('') || empty('All caught up','')}</div>
+        <div class="mini-list">${(d.attention||[]).map(b=>`<div class="mini-row"><div class="grow"><strong>${escapeHtml(b.customerName)}</strong><span>${escapeHtml(b.service?.name||b.type)} · ${escapeHtml(b.ref)}</span></div>${badge(b.status)}<a class="btn btn-ghost btn-sm" href="#/provider/bookings/${b.ref}">Open</a></div>`).join('') || empty('All caught up','')}</div>
       </div>
     </div>
     <div>
       <div class="workspace-panel">
         <div class="workspace-panel-head"><h2>Upcoming</h2></div>
-        <div class="mini-list">${(d.upcoming||[]).map(b=>`<div class="mini-row"><div class="grow"><strong>${escapeHtml(b.name)}</strong><span>${escapeHtml(b.service)} Â· ${fmtDateTime(b.startAt)}</span></div></div>`).join('') || empty('None','')}</div>
+        <div class="mini-list">${(d.upcoming||[]).map(b=>`<div class="mini-row"><div class="grow"><strong>${escapeHtml(b.name)}</strong><span>${escapeHtml(b.service)} · ${fmtDateTime(b.startAt)}</span></div></div>`).join('') || empty('None','')}</div>
       </div>
       <div class="workspace-panel">
         <div class="workspace-panel-head"><h2>Quick links</h2></div>
@@ -1125,7 +1125,7 @@ export async function renderProviderBookingDetail(params) {
   const data = await API.get(`/api/provider/bookings/${params.ref}`);
   const b = data.booking;
   const inner = `
-  <div class="workspace-top"><div><h1>${escapeHtml(b.ref)}</h1><p>${escapeHtml(b.service?.name||b.type)} Â· ${escapeHtml(b.statusLabel)}</p></div><div class="workspace-top-actions"><a class="btn btn-outline btn-sm" href="#/provider/bookings">â† Back</a></div></div>
+  <div class="workspace-top"><div><h1>${escapeHtml(b.ref)}</h1><p>${escapeHtml(b.service?.name||b.type)} · ${escapeHtml(b.statusLabel)}</p></div><div class="workspace-top-actions"><a class="btn btn-outline btn-sm" href="#/provider/bookings">← Back</a></div></div>
   <div class="request-layout">
     <div>
       <div class="workspace-panel">
@@ -1134,16 +1134,16 @@ export async function renderProviderBookingDetail(params) {
           <div><dt>Customer</dt><dd>${escapeHtml(b.customerName)}</dd></div>
           <div><dt>Phone</dt><dd>${escapeHtml(b.customerPhone)}</dd></div>
           <div><dt>Preferred time</dt><dd>${fmtDateTime(b.preferredStartAt)}</dd></div>
-          <div><dt>Confirmed time</dt><dd>${b.confirmedStartAt?fmtDateTime(b.confirmedStartAt):'â€”'}</dd></div>
+          <div><dt>Confirmed time</dt><dd>${b.confirmedStartAt?fmtDateTime(b.confirmedStartAt):'—'}</dd></div>
           ${b.specialRequests?`<div class="full"><dt>Special requests</dt><dd>${escapeHtml(b.specialRequests)}</dd></div>`:''}
-          ${b.puja?`<div class="full"><dt>Puja</dt><dd>${escapeHtml(b.puja.locationType.replace('_',' '))} Â· ${escapeHtml(b.puja.occasion)} Â· ${b.puja.attendeeEstimate} attendees</dd></div>`:''}
-          ${b.consultation?`<div class="full"><dt>Consultation</dt><dd>${escapeHtml(b.consultation.mode)} Â· ${escapeHtml((b.consultation.topics||[]).join(', '))}</dd></div>`:''}
-          ${b.birthDetails?.length?`<div class="full"><dt>Birth details</dt><dd>${b.birthDetails.map(p=>escapeHtml(p.name+' Â· '+p.dateOfBirth+' Â· '+p.place)).join('; ')}</dd></div>`:''}
+          ${b.puja?`<div class="full"><dt>Puja</dt><dd>${escapeHtml(b.puja.locationType.replace('_',' '))} · ${escapeHtml(b.puja.occasion)} · ${b.puja.attendeeEstimate} attendees</dd></div>`:''}
+          ${b.consultation?`<div class="full"><dt>Consultation</dt><dd>${escapeHtml(b.consultation.mode)} · ${escapeHtml((b.consultation.topics||[]).join(', '))}</dd></div>`:''}
+          ${b.birthDetails?.length?`<div class="full"><dt>Birth details</dt><dd>${b.birthDetails.map(p=>escapeHtml(p.name+' · '+p.dateOfBirth+' · '+p.place)).join('; ')}</dd></div>`:''}
         </div>
       </div>
       <div class="workspace-panel">
         <div class="workspace-panel-head"><h2>Timeline</h2></div>
-        <div class="timeline compact">${(b.history||[]).map(h=>`<div class="timeline-item"><div class="timeline-dot"></div><div><strong>${escapeHtml(h.toLabel)}</strong><span> Â· ${fmtDateTime(h.at)}</span></div></div>`).join('')}</div>
+        <div class="timeline compact">${(b.history||[]).map(h=>`<div class="timeline-item"><div class="timeline-dot"></div><div><strong>${escapeHtml(h.toLabel)}</strong><span> · ${fmtDateTime(h.at)}</span></div></div>`).join('')}</div>
       </div>
       <div class="workspace-panel">
         <div class="workspace-panel-head"><h2>Notes</h2></div>
@@ -1201,11 +1201,11 @@ export async function renderProviderSchedule() {
   if (!state.user?.provider && !state.user?.isStaff) { navigate('#/login'); return workspaceLayout(spinner(),'schedule'); }
   const data = await API.get('/api/provider/schedule');
   const inner = `
-  <div class="workspace-top"><div><h1>Schedule</h1><p>${fmtDate(data.from+'T12:00:00+05:30','date')} â€” ${fmtDate(data.to+'T12:00:00+05:30','date')}</p></div></div>
+  <div class="workspace-top"><div><h1>Schedule</h1><p>${fmtDate(data.from+'T12:00:00+05:30','date')} — ${fmtDate(data.to+'T12:00:00+05:30','date')}</p></div></div>
   <div class="workspace-panel">
-    <div class="agenda-list">${(data.bookings||[]).map(b=>`<div class="agenda-row"><div class="agenda-time">${fmtTime(b.startAt)}<br>${fmtDate(b.startAt,'short')}</div><div class="agenda-body"><strong>${escapeHtml(b.name)} Â· ${escapeHtml(b.service)}</strong><span>${escapeHtml(b.ref)} Â· ${escapeHtml(b.statusLabel)}</span></div><a class="btn btn-ghost btn-sm" href="#/provider/bookings/${b.ref}">Open</a></div>`).join('') || empty('No bookings in range','')}</div>
+    <div class="agenda-list">${(data.bookings||[]).map(b=>`<div class="agenda-row"><div class="agenda-time">${fmtTime(b.startAt)}<br>${fmtDate(b.startAt,'short')}</div><div class="agenda-body"><strong>${escapeHtml(b.name)} · ${escapeHtml(b.service)}</strong><span>${escapeHtml(b.ref)} · ${escapeHtml(b.statusLabel)}</span></div><a class="btn btn-ghost btn-sm" href="#/provider/bookings/${b.ref}">Open</a></div>`).join('') || empty('No bookings in range','')}</div>
   </div>
-  ${data.exceptions?.length?`<div class="workspace-panel"><div class="workspace-panel-head"><h2>Exceptions</h2></div>${data.exceptions.map(e=>`<div class="exception-row"><div><strong>${escapeHtml(e.type)}</strong><span>${fmtDateTime(e.startAt)} â†’ ${fmtDateTime(e.endAt)}${e.reason?' Â· '+escapeHtml(e.reason):''}</span></div></div>`).join('')}</div>`:''}`;
+  ${data.exceptions?.length?`<div class="workspace-panel"><div class="workspace-panel-head"><h2>Exceptions</h2></div>${data.exceptions.map(e=>`<div class="exception-row"><div><strong>${escapeHtml(e.type)}</strong><span>${fmtDateTime(e.startAt)} → ${fmtDateTime(e.endAt)}${e.reason?' · '+escapeHtml(e.reason):''}</span></div></div>`).join('')}</div>`:''}`;
   const html = workspaceLayout(inner,'schedule','provider');
   wireWorkspace();
   return html;
@@ -1233,7 +1233,7 @@ export async function renderProviderAvailability() {
       </div>
       <button class="btn btn-primary btn-sm" type="submit">Add window</button>
     </form>
-    <div class="week-grid">${weekdays.map((w,i)=>`<div class="week-row"><div class="weekday">${w}</div><div class="rule-chips">${(rulesByDay[i]||[]).map(r=>`<span class="rule-chip">${escapeHtml(r.startTime)}â€“${escapeHtml(r.endTime)} Â· ${r.duration}m Â· ${escapeHtml(r.serviceType)} <button class="rm" data-rule="${r.id}">Ã—</button></span>`).join('') || '<span class="muted small">No windows</span>'}</div></div>`).join('')}</div>
+    <div class="week-grid">${weekdays.map((w,i)=>`<div class="week-row"><div class="weekday">${w}</div><div class="rule-chips">${(rulesByDay[i]||[]).map(r=>`<span class="rule-chip">${escapeHtml(r.startTime)}–${escapeHtml(r.endTime)} · ${r.duration}m · ${escapeHtml(r.serviceType)} <button class="rm" data-rule="${r.id}">×</button></span>`).join('') || '<span class="muted small">No windows</span>'}</div></div>`).join('')}</div>
   </div>
   <div class="workspace-panel">
     <div class="workspace-panel-head"><h2>Exceptions</h2></div>
@@ -1246,7 +1246,7 @@ export async function renderProviderAvailability() {
       <div class="field"><label>Reason</label><input name="reason" /></div>
       <button class="btn btn-outline btn-sm" type="submit">Add exception</button>
     </form>
-    ${(data.exceptions||[]).map(e=>`<div class="exception-row"><div><strong>${escapeHtml(e.type)}</strong><span>${fmtDateTime(e.startAt)} â†’ ${fmtDateTime(e.endAt)}${e.reason?' Â· '+escapeHtml(e.reason):''}</span></div><button class="icon-btn danger" data-exc="${e.id}">${icon('trash')}</button></div>`).join('') || empty('No exceptions','')}
+    ${(data.exceptions||[]).map(e=>`<div class="exception-row"><div><strong>${escapeHtml(e.type)}</strong><span>${fmtDateTime(e.startAt)} → ${fmtDateTime(e.endAt)}${e.reason?' · '+escapeHtml(e.reason):''}</span></div><button class="icon-btn danger" data-exc="${e.id}">${icon('trash')}</button></div>`).join('') || empty('No exceptions','')}
   </div>`;
   const html = workspaceLayout(inner,'availability','provider');
   wireWorkspace();

@@ -2,9 +2,9 @@
 import {
   state, API, escapeHtml, fmtDate, fmtTime, fmtDateTime, initials, badge, icon,
   layout, pageHero, empty, spinner, modal, toast, navigate, statusLabel, parseJson, ensure, qsa, enhance
-} from './core.js?v=14';
-import * as authSupabase from './auth-supabase.js?v=14';
-import { currentSession } from './supabase-client.js?v=14';
+} from './core.js?v=15';
+import * as authSupabase from './auth-supabase.js?v=15';
+import { currentSession } from './supabase-client.js?v=15';
 
 const TYPES = { puja: 'PUJA', consultation: 'CONSULTATION', event: 'EVENT' };
 
@@ -65,7 +65,7 @@ function stepBar() {
   return `<div class="stepper">${steps.map((s, i) => {
     const n = i + 1;
     const cls = B.step === n ? 'active' : (B.step > n ? 'done' : '');
-    return `<div class="stepper-item ${cls}"><span class="num">${B.step > n ? 'âœ“' : n}</span><span class="label">${escapeHtml(s)}</span></div>`;
+    return `<div class="stepper-item ${cls}"><span class="num">${B.step > n ? '✓' : n}</span><span class="label">${escapeHtml(s)}</span></div>`;
   }).join('')}</div>`;
 }
 
@@ -91,7 +91,7 @@ function serviceSummary() {
 function loginGate() {
   return `<div class="auth-card" style="max-width:460px;margin:0 auto">
     <h1 class="display" style="font-size:2rem">Sign in to continue</h1>
-    <p>Booking needs an account so we can reach you to confirm. Sign in or create one â€” it only takes a moment. Phone SMS sign-in is coming soon.</p>
+    <p>Booking needs an account so we can reach you to confirm. Sign in or create one — it only takes a moment. Phone SMS sign-in is coming soon.</p>
     <div class="auth-tabs"><button class="auth-tab active" data-tab="email" data-tab-group="gate">Email account</button><button class="auth-tab" data-tab="pw" data-tab-group="gate">Staff &amp; Pandit</button></div>
     <div data-panel-group="gate" data-panel="email">
       <div id="gSignInView">
@@ -126,7 +126,7 @@ function loginGate() {
 
 function wireLoginGate() {
   const finish = async () => {
-    await (await import('./core.js?v=14')).loadMe();
+    await (await import('./core.js?v=15')).loadMe();
     renderCurrent();
   };
   const showNote = (msg) => {
@@ -171,7 +171,7 @@ function wireLoginGate() {
         await finish();
       } else {
         switchView(false);
-        showNote(`Account created for ${email}. We sent you a confirmation link â€” open it, then sign in here.`);
+        showNote(`Account created for ${email}. We sent you a confirmation link — open it, then sign in here.`);
         document.getElementById('gEmail').value = email;
       }
     } catch (e) { toast('Could not create account', e.message, 'error'); }
@@ -244,7 +244,7 @@ function step1Html() {
     <div class="booking-grid">
       <div class="booking-main">
         <h2>Choose a time</h2>
-        <p class="step-sub">Pick a date, then a slot. Tentative slots (dashed) are being discussed with someone else â€” you can still request them.</p>
+        <p class="step-sub">Pick a date, then a slot. Tentative slots (dashed) are being discussed with someone else — you can still request them.</p>
         <div id="slotArea">${spinner()}</div>
         <div class="alt-time">
           <h4>None of these work?</h4>
@@ -283,7 +283,7 @@ function renderSlotArea(data) {
   const days = data.days || [];
   const groups = data.groups || { morning: [], afternoon: [], evening: [] };
   const html = `
-    <div class="slot-calendar">${days.map(d => `<button class="slot-day ${d.date===B.selectedDate?'active':''} ${d.count?'':'empty'}" data-date="${d.date}"><span class="wd">${escapeHtml(d.weekday)}</span><span class="dd">${d.day}</span><span class="ct">${d.count?d.count+' open':'â€”'}</span></button>`).join('')}</div>
+    <div class="slot-calendar">${days.map(d => `<button class="slot-day ${d.date===B.selectedDate?'active':''} ${d.count?'':'empty'}" data-date="${d.date}"><span class="wd">${escapeHtml(d.weekday)}</span><span class="dd">${d.day}</span><span class="ct">${d.count?d.count+' open':'—'}</span></button>`).join('')}</div>
     ${['morning','afternoon','evening'].map(g => groups[g]?.length ? `<div class="slot-group"><h4>${g}</h4><div class="slot-chips">${groups[g].map(s=>`<button class="slot-chip ${s.id===B.selectedSlot?'active':''} ${s.status!=='AVAILABLE'?'tentative':''}" data-slot="${s.id}">${fmtTime(s.startAt)}<small>${s.status==='AVAILABLE'?'available':'request pending'}</small></button>`).join('')}</div></div>` : '').join('')}
     ${!Object.values(groups).flat().length ? `<p class="muted small">No slots on this day. Pick another date, or use the alternative time below.</p>` : ''}`;
   area.innerHTML = html;
@@ -377,7 +377,7 @@ function step2Html() {
           <div class="field"><label>Samagri by</label><select id="samagri"><option value="PRIEST" ${B.details.samagriBy==='PRIEST'?'selected':''}>Pandit ji brings</option><option value="CUSTOMER" ${B.details.samagriBy==='CUSTOMER'?'selected':''}>I will arrange</option><option value="DISCUSS" ${B.details.samagriBy==='DISCUSS'?'selected':''}>Discuss on call</option></select></div>
           <div class="field"><label>Expected attendees</label><input id="attendees" type="number" min="1" value="${B.details.attendeeEstimate||contact.participants||5}" /></div>
         </div>
-        <div class="check-line"><input type="checkbox" id="live" ${B.details.liveStreamRequired?'checked':''} /><span><strong>Live stream required</strong> â€” for family joining online</span></div>
+        <div class="check-line"><input type="checkbox" id="live" ${B.details.liveStreamRequired?'checked':''} /><span><strong>Live stream required</strong> — for family joining online</span></div>
       </div>`;
   } else {
     const topics = ['Career','Marriage','Health','Finance','Family','Education','Travel','General'];
@@ -392,7 +392,7 @@ function step2Html() {
         </div></div>
         <div class="field"><label>Your question</label><textarea id="question" placeholder="What would you like guidance on?">${escapeHtml(B.details.question||'')}</textarea></div>
         <div class="check-line"><input type="checkbox" id="prevChart" ${B.details.hasPreviousChart?'checked':''} /><span>I have a previous chart or reading to share</span></div>
-        ${service.slug==='kundli-matching' ? `<div class="check-line"><input type="checkbox" id="matching" checked disabled /><span><strong>Kundli matching</strong> â€” two birth profiles required</span></div>` : `<div class="check-line"><input type="checkbox" id="matching" ${B.details.matchingRequired?'checked':''} /><span>Kundli matching included</span></div>`}
+        ${service.slug==='kundli-matching' ? `<div class="check-line"><input type="checkbox" id="matching" checked disabled /><span><strong>Kundli matching</strong> — two birth profiles required</span></div>` : `<div class="check-line"><input type="checkbox" id="matching" ${B.details.matchingRequired?'checked':''} /><span>Kundli matching included</span></div>`}
       </div>
       <div class="form-section">
         <div class="form-section-title">Birth details</div>
@@ -424,7 +424,7 @@ function step2Html() {
           </div>
           <div class="field-row">
             <div class="field"><label>Preferred contact</label><select id="cChannel"><option value="CALL" ${contact.channel==='CALL'?'selected':''}>Call</option><option value="WHATSAPP" ${contact.channel==='WHATSAPP'?'selected':''}>WhatsApp</option><option value="SMS" ${contact.channel==='SMS'?'selected':''}>SMS</option><option value="EMAIL" ${contact.channel==='EMAIL'?'selected':''}>Email</option></select></div>
-            <div class="field"><label>Call window</label><input id="cWindow" value="${escapeHtml(contact.callWindow||'')}" placeholder="Evening 6â€“9 PM" /></div>
+            <div class="field"><label>Call window</label><input id="cWindow" value="${escapeHtml(contact.callWindow||'')}" placeholder="Evening 6–9 PM" /></div>
           </div>
           <div class="field"><label>Participants</label><input id="cParts" type="number" min="1" value="${contact.participants||1}" /></div>
           <div class="field"><label>Special requests (optional)</label><textarea id="cSpec" placeholder="Anything we should know">${escapeHtml(contact.specialRequests||'')}</textarea></div>
@@ -442,7 +442,7 @@ function step2Html() {
 
 function step3Html() {
   const slot = B.selectedSlot ? (B.slotsData?.slots||[]).find(s=>s.id===B.selectedSlot) : null;
-  const when = slot ? fmtDateTime(slot.startAt) : (B.altStart ? fmtDateTime(new Date(B.altStart).toISOString()) : 'â€”');
+  const when = slot ? fmtDateTime(slot.startAt) : (B.altStart ? fmtDateTime(new Date(B.altStart).toISOString()) : '—');
   return `<section class="booking-shell"><div class="container">
     <div class="booking-head"><div><span class="eyebrow">Review</span><h1 class="display">Almost there</h1><p class="muted">Check everything, then submit. We will call you to confirm.</p></div></div>
     ${stepBar()}
@@ -452,15 +452,15 @@ function step3Html() {
           <dl class="review-dl">
             <dt>Service</dt><dd>${escapeHtml(B.type==='EVENT'?B.event.title:B.service.name)}</dd>
             <dt>When</dt><dd>${escapeHtml(when)}</dd>
-            ${B.type==='EVENT'?`<dt>Seats</dt><dd>${B.seats} Â· ${B.mode.replace('_',' ').toLowerCase()}</dd>`:''}
+            ${B.type==='EVENT'?`<dt>Seats</dt><dd>${B.seats} · ${B.mode.replace('_',' ').toLowerCase()}</dd>`:''}
           </dl>
         </div>
         <div class="review-block"><div class="review-block-head"><h3>Contact</h3><button type="button" id="edit2a">Edit</button></div>
           <dl class="review-dl">
             <dt>Name</dt><dd>${escapeHtml(B.contact.name)}</dd>
             <dt>Mobile</dt><dd>${escapeHtml(B.contact.phone)}</dd>
-            <dt>Email</dt><dd>${escapeHtml(B.contact.email||'â€”')}</dd>
-            <dt>Channel</dt><dd>${escapeHtml(B.contact.channel)} Â· ${escapeHtml(B.contact.callWindow||'any time')}</dd>
+            <dt>Email</dt><dd>${escapeHtml(B.contact.email||'—')}</dd>
+            <dt>Channel</dt><dd>${escapeHtml(B.contact.channel)} · ${escapeHtml(B.contact.callWindow||'any time')}</dd>
           </dl>
         </div>
         <div class="consent-block">
@@ -524,7 +524,7 @@ function wireStep2() {
       B.details.locationType = loc;
       if (loc === 'CUSTOMER_HOME') {
         addressArea.innerHTML = `
-          <div class="field"><label>Saved address</label><select id="addrSelect"><option value="">â€” enter new address â€”</option></select></div>
+          <div class="field"><label>Saved address</label><select id="addrSelect"><option value="">— enter new address —</option></select></div>
           <div id="newAddr">
             <div class="field"><label>Address line 1 *</label><input id="aLine1" value="${escapeHtml(B.details.address?.line1||'')}" /></div>
             <div class="field-row">
@@ -538,7 +538,7 @@ function wireStep2() {
           const sel = document.getElementById('addrSelect');
           if (!sel) return;
           (d.addresses||[]).forEach(a => {
-            const o = document.createElement('option'); o.value = a.id; o.textContent = `${a.label} Â· ${a.line1}, ${a.city}`;
+            const o = document.createElement('option'); o.value = a.id; o.textContent = `${a.label} · ${a.line1}, ${a.city}`;
             sel.appendChild(o);
           });
           sel.addEventListener('change', () => {
@@ -578,7 +578,7 @@ function wireStep2() {
             <div class="field"><label>Date of birth *</label><input class="bDob" data-i="${i}" type="date" value="${escapeHtml(b.dateOfBirth)}" /></div>
             <div class="field"><label>Time of birth</label><input class="bTob" data-i="${i}" type="time" value="${escapeHtml(b.timeOfBirth)}" ${b.timeUnknown?'disabled':''} /></div>
           </div>
-          <div class="check-line" style="margin-bottom:8px"><input type="checkbox" class="bUnknown" data-i="${i}" ${b.timeUnknown?'checked':''} /><span>I donâ€™t know the time</span></div>
+          <div class="check-line" style="margin-bottom:8px"><input type="checkbox" class="bUnknown" data-i="${i}" ${b.timeUnknown?'checked':''} /><span>I don’t know the time</span></div>
           <div class="field"><label>Place of birth *</label><input class="bPlace" data-i="${i}" value="${escapeHtml(b.placeOfBirth)}" placeholder="City, State, Country" /></div>
           <div class="field-row">
             <div class="field"><label>Gotra</label><input class="bGotra" data-i="${i}" value="${escapeHtml(b.gotra)}" /></div>
@@ -667,7 +667,7 @@ function wireStep3() {
     const cph = document.getElementById('consentPhone')?.checked;
     const cb = document.getElementById('consentBirth');
     if (!cp || !cph || (cb && !cb.checked)) { toast('Consent required', 'Please tick the consent boxes to continue.', 'error'); return; }
-    submit.disabled = true; submit.textContent = 'Submittingâ€¦';
+    submit.disabled = true; submit.textContent = 'Submitting…';
     try {
       const body = buildSubmitBody();
       const res = await API.post('/api/bookings', body);
@@ -739,8 +739,8 @@ export async function renderLogin() {
   <div class="auth-page">
     <div class="auth-art">
       <div class="auth-art-content">
-        <blockquote>â€œA puja is not a transaction. It is a conversation between a family and its priest.â€</blockquote>
-        <span>â€” Pandit Ramesh Sharma</span>
+        <blockquote>“A puja is not a transaction. It is a conversation between a family and its priest.”</blockquote>
+        <span>— Pandit Ramesh Sharma</span>
       </div>
     </div>
     <div class="auth-panel">
@@ -777,7 +777,7 @@ export async function renderLogin() {
           <button class="btn btn-primary btn-block" id="pwBtn">Sign in</button>
           <div class="auth-alt" style="margin-top:10px"><a href="#" id="pwForgotLink">Forgot password?</a></div>
         </div>
-        <p class="auth-alt">New here? <a href="#/pujas">Browse pujas</a> â€” you can sign in at checkout.</p>
+        <p class="auth-alt">New here? <a href="#/pujas">Browse pujas</a> — you can sign in at checkout.</p>
       </div>
     </div>
   </div>`;
@@ -797,7 +797,7 @@ export async function renderLogin() {
       pwBtn.disabled = true;
       try {
         await authSupabase.signIn(document.getElementById('pwEmail').value, document.getElementById('pwPass').value);
-        await (await import('./core.js?v=14')).loadMe();
+        await (await import('./core.js?v=15')).loadMe();
         toast('Welcome back', '', 'success');
         const u = state.user;
         navigate(u?.isOwner ? '#/admin' : u?.provider ? '#/provider' : '#/my');
@@ -828,7 +828,7 @@ export async function renderLogin() {
       showNote('');
     };
     const goIn = async () => {
-      await (await import('./core.js?v=14')).loadMe();
+      await (await import('./core.js?v=15')).loadMe();
       const u = state.user;
       navigate(u?.isOwner ? '#/admin' : u?.provider ? '#/provider' : '#/my');
     };
@@ -865,7 +865,7 @@ export async function renderLogin() {
         } else {
           // Email confirmation is required before first sign-in.
           switchView(false);
-          showNote(`Account created for ${email}. We sent you a confirmation link â€” open it, then sign in here.`);
+          showNote(`Account created for ${email}. We sent you a confirmation link — open it, then sign in here.`);
           document.getElementById('sbEmail').value = email;
           toast('Check your inbox', 'Confirm your email to activate your account.', 'success');
         }
@@ -898,7 +898,7 @@ export async function renderResetPassword() {
     <section class="section-tight"><div class="container" style="max-width:560px">
       <div class="panel" style="text-align:center;padding:38px 26px">
         <h2 class="display" style="font-size:1.6rem">Reset link expired</h2>
-        <p class="muted" style="margin:10px 0 18px">This password reset link is invalid or has expired. Request a fresh one â€” it only takes a moment.</p>
+        <p class="muted" style="margin:10px 0 18px">This password reset link is invalid or has expired. Request a fresh one — it only takes a moment.</p>
         <a class="btn btn-primary" href="#/login">Back to sign in</a>
       </div>
     </div></section>`;
@@ -927,7 +927,7 @@ export async function renderResetPassword() {
         if (pass !== confirm) throw new Error('Passwords do not match.');
         await authSupabase.updatePassword(pass, confirm);
         await authSupabase.syncBackend(session.access_token);
-        await (await import('./core.js?v=14')).loadMe();
+        await (await import('./core.js?v=15')).loadMe();
         toast('Password updated', 'You are signed in with your new password.', 'success');
         navigate('#/my');
       } catch (err) { toast('Could not update password', err.message, 'error'); }

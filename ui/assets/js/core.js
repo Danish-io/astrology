@@ -1,4 +1,4 @@
-// Aradhana â€” core helpers, state, routing and layout
+// Aradhana — core helpers, state, routing and layout
 'use strict';
 
 export const state = {
@@ -30,11 +30,11 @@ export function el(tag, attrs = {}, ...children) {
 export function escapeHtml(value) {
   return String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
 }
-export function money(n) { return n ? `â‚¹${Number(n).toLocaleString('en-IN')}` : 'â€”'; }
+export function money(n) { return n ? `₹${Number(n).toLocaleString('en-IN')}` : '—'; }
 export function fmtDate(iso, style = 'date') {
-  if (!iso) return 'â€”';
+  if (!iso) return '—';
   const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return 'â€”';
+  if (Number.isNaN(d.getTime())) return '—';
   const opts = style === 'long'
     ? { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' }
     : style === 'short' ? { day: '2-digit', month: 'short' }
@@ -42,12 +42,12 @@ export function fmtDate(iso, style = 'date') {
   return new Intl.DateTimeFormat('en-IN', { timeZone: 'Asia/Kolkata', ...opts }).format(d);
 }
 export function fmtTime(iso) {
-  if (!iso) return 'â€”';
+  if (!iso) return '—';
   const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return 'â€”';
+  if (Number.isNaN(d.getTime())) return '—';
   return new Intl.DateTimeFormat('en-IN', { timeZone: 'Asia/Kolkata', hour: 'numeric', minute: '2-digit', hour12: true }).format(d);
 }
-export function fmtDateTime(iso) { return iso ? `${fmtDate(iso)} Â· ${fmtTime(iso)} IST` : 'â€”'; }
+export function fmtDateTime(iso) { return iso ? `${fmtDate(iso)} · ${fmtTime(iso)} IST` : '—'; }
 export function relative(iso) {
   if (!iso) return '';
   const diff = new Date(iso).getTime() - Date.now();
@@ -115,7 +115,7 @@ export function toast(title, message = '', type = 'info', ms = 4200) {
   const root = ensureToastRoot();
   const node = document.createElement('div');
   node.className = `toast ${type}`;
-  node.innerHTML = `<div><strong>${escapeHtml(title)}</strong>${message ? `<p>${escapeHtml(message)}</p>` : ''}</div><button class="toast-close" aria-label="Close">Ã—</button>`;
+  node.innerHTML = `<div><strong>${escapeHtml(title)}</strong>${message ? `<p>${escapeHtml(message)}</p>` : ''}</div><button class="toast-close" aria-label="Close">×</button>`;
   root.appendChild(node);
   const close = () => { node.style.opacity = '0'; setTimeout(() => node.remove(), 200); };
   node.querySelector('.toast-close').addEventListener('click', close);
@@ -132,7 +132,7 @@ export function modal({ title, subtitle = '', body = '', actions = '', size = ''
     <div class="modal-panel ${size}">
       <div class="modal-head">
         <div><h2>${escapeHtml(title)}</h2>${subtitle ? `<p>${escapeHtml(subtitle)}</p>` : ''}</div>
-        <button class="modal-close" aria-label="Close">Ã—</button>
+        <button class="modal-close" aria-label="Close">×</button>
       </div>
       <div class="modal-body">${body}</div>
       ${actions ? `<div class="modal-actions" style="padding:0 24px 22px">${actions}</div>` : ''}
@@ -253,7 +253,7 @@ function topbar() {
   const phone = s['site.contact_phone'] || '+91 90000 12345';
   const wa = (s['site.contact_whatsapp'] || '+919000012345').replace(/\D/g, '');
   return `<div class="site-topbar"><div class="container">
-    <span>${escapeHtml(s['site.pandit_title'] || 'Vedic priest & jyotish guide Â· Hyderabad')}</span>
+    <span>${escapeHtml(s['site.pandit_title'] || 'Vedic priest & jyotish guide · Hyderabad')}</span>
     <div class="topbar-right">
       <a href="tel:${escapeHtml(phone.replace(/\s/g, ''))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg> ${escapeHtml(phone)}</a>
     </div>
@@ -282,7 +282,7 @@ function header(mode) {
     <div class="container">
       <a class="brand" href="#/">
         <span class="brand-mark"><svg viewBox="0 0 64 64" fill="none"><path d="M32 6c5 10 5 17 0 25-5-8-5-15 0-25Z" stroke="currentColor" stroke-width="1.4"/><path d="M32 58c-5-10-5-17 0-25 5 8 5 15 0 25Z" stroke="currentColor" stroke-width="1.4"/><path d="M6 32c10-5 17-5 25 0-8 5-15 5-25 0Z" stroke="currentColor" stroke-width="1.4"/><path d="M58 32c-10 5-17 5-25 0 8-5 15-5 25 0Z" stroke="currentColor" stroke-width="1.4"/><circle cx="32" cy="32" r="5" fill="currentColor"/></svg></span>
-        <span class="brand-text"><span class="brand-name">${escapeHtml(name)}</span><span class="brand-sub">Vedic pujas Â· jyotish Â· gatherings</span></span>
+        <span class="brand-text"><span class="brand-name">${escapeHtml(name)}</span><span class="brand-sub">Vedic pujas · jyotish · gatherings</span></span>
       </a>
       ${nav}
       <div class="header-actions">${actions}</div>
@@ -296,7 +296,7 @@ function footer() {
   const wa = (s['site.contact_whatsapp'] || '+919000012345').replace(/\D/g, '');
   const email = s['site.email'] || 'namaste@aradhana.in';
   const addr = s['site.address'] || '12 Lotus Lane, Jubilee Hills, Hyderabad 500033';
-  const hours = s['site.hours'] || 'Monâ€“Sat, 9:00 AM â€“ 8:00 PM IST';
+  const hours = s['site.hours'] || 'Mon–Sat, 9:00 AM – 8:00 PM IST';
   const ig = s['site.instagram']; const yt = s['site.youtube'];
   return `<footer class="site-footer">
     <div class="container">
@@ -324,9 +324,9 @@ function footer() {
         </div>
       </div>
       <div class="footer-bottom">
-        <span>Â© ${new Date().getFullYear()} ${escapeHtml(s['site.name'] || 'Aradhana')} Â· Requests, not transactions. No payment is taken online.</span>
-        <span class="footer-om">à¥ à¤¶à¤¾à¤¨à¥à¤¤à¤¿à¤ƒ à¤¶à¤¾à¤¨à¥à¤¤à¤¿à¤ƒ à¤¶à¤¾à¤¨à¥à¤¤à¤¿à¤ƒ</span>
-        <span><a href="#/privacy">Privacy</a> Â· <a href="#/terms">Terms</a> Â· <a href="#/cancellation">Cancellation</a></span>
+        <span>© ${new Date().getFullYear()} ${escapeHtml(s['site.name'] || 'Aradhana')} · Requests, not transactions. No payment is taken online.</span>
+        <span class="footer-om">ॐ शान्तिः शान्तिः शान्तिः</span>
+        <span><a href="#/privacy">Privacy</a> · <a href="#/terms">Terms</a> · <a href="#/cancellation">Cancellation</a></span>
       </div>
     </div>
   </footer>`;
@@ -415,7 +415,7 @@ export function enhance(root = document) {
       qsa(`[data-panel-group="${group}"]`).forEach((p) => p.classList.toggle('hide', p.dataset.panel !== btn.dataset.tab));
     });
   });
-  // Bottom mobile bar (fixed) — keep body padded so it never covers content
+  // Bottom mobile bar (fixed)  keep body padded so it never covers content
   document.body.classList.toggle('has-mobile-bar', !!root.querySelector('.mobile-bar'));
   // show/hide password eye buttons
   wirePasswordToggles(root);
@@ -441,7 +441,7 @@ export function isProvider() { return !!state.user?.provider; }
 export async function logout() {
   // Clear the Supabase session (if any) first, then the backend cookie.
   try {
-    const a = await import('./auth-supabase.js?v=14');
+    const a = await import('./auth-supabase.js?v=15');
     await a.signOut();
   } catch {
     try { await API.post('/api/auth/logout'); } catch {}
@@ -508,7 +508,7 @@ export function iconFilled(name, cls = '') {
 }
 export function stars(rating = 0) {
   let out = '';
-  for (let i = 1; i <= 5; i++) out += `<span style="color:${i <= Math.round(rating) ? 'var(--gold)' : 'var(--line)'}">${i <= Math.round(rating) ? 'â˜…' : 'â˜†'}</span>`;
+  for (let i = 1; i <= 5; i++) out += `<span style="color:${i <= Math.round(rating) ? 'var(--gold)' : 'var(--line)'}">${i <= Math.round(rating) ? '★' : '☆'}</span>`;
   return `<span class="stars" style="display:inline-flex;gap:1px">${out}</span>`;
 }
 
@@ -517,7 +517,7 @@ export function setting(key, fallback = '') { return (state.settings && state.se
 export function panditName() { return setting('site.pandit_name', 'Pandit Ramesh Sharma'); }
 export function panditShort() { return setting('site.pandit_short_name', 'Pandit ji'); }
 export function siteName() { return setting('site.name', 'Aradhana'); }
-export function ensure(v, fallback = 'â€”') { return (v === null || v === undefined || v === '') ? fallback : v; }
+export function ensure(v, fallback = '—') { return (v === null || v === undefined || v === '') ? fallback : v; }
 export function parseJson(v, fallback = null) { if (typeof v !== 'string') return v ?? fallback; try { return JSON.parse(v); } catch { return fallback; } }
 export function dayKey(iso) { return new Date(iso).toISOString().slice(0, 10); }
 
@@ -553,10 +553,10 @@ export async function boot() {
   // Restore it BEFORE the router starts so protected pages never flash
   // anonymous content.
   // Confirmation/recovery links land here with credentials in the URL
-  // (e.g. "#access_token=…&type=signup" or "?code=…"). The official SDK
+  // (e.g. "#access_token=&type=signup" or "?code="). The official SDK
   // consumes them (detectSessionInUrl); we then bridge to the backend and
   // SCRUB THE URL - otherwise the hash router matches a nonsense path
-  // like "#access_token=…" and renders the 404 page.
+  // like "#access_token=" and renders the 404 page.
   try {
     const rawHash = location.hash.slice(1);
     const urlParams = new URLSearchParams(location.search);
@@ -571,7 +571,7 @@ export async function boot() {
     if (isAuthUrl) {
       let target = '#/login';
       if (!errCode) {
-        const a = await import('./auth-supabase.js?v=14');
+        const a = await import('./auth-supabase.js?v=15');
         const restored = await a.restoreSupabaseSession();
         if (restored) {
           await loadMe();
@@ -590,7 +590,7 @@ export async function boot() {
   } catch (bootErr) { console.warn('[boot] auth-url handling failed:', bootErr?.message || bootErr); }
   if (!state.user) {
     try {
-      const a = await import('./auth-supabase.js?v=14');
+      const a = await import('./auth-supabase.js?v=15');
       const restored = await a.restoreSupabaseSession();
       if (restored) await loadMe();
     } catch { /* Supabase optional */ }
@@ -598,14 +598,14 @@ export async function boot() {
   // Centralized auth-state listener: keeps every tab in sync with the
   // official Supabase session (sign-out in another tab, token refresh).
   try {
-    const { onSupabaseAuthStateChange } = await import('./supabase-client.js?v=14');
+    const { onSupabaseAuthStateChange } = await import('./supabase-client.js?v=15');
     await onSupabaseAuthStateChange(async (event, session) => {
       if (event === 'SIGNED_IN' && session?.access_token) {
         try {
-          const a = await import('./auth-supabase.js?v=14');
+          const a = await import('./auth-supabase.js?v=15');
           await a.syncBackend(session.access_token);
           await loadMe();
-        } catch { /* bridge failed â€” next API call will retry */ }
+        } catch { /* bridge failed — next API call will retry */ }
       } else if (event === 'SIGNED_OUT') {
         state.user = null;
         state.unread = 0;
@@ -643,11 +643,11 @@ function initEnhancements() {
     <div id="chatPanel" style="display:none;width:min(360px,calc(100vw-36px));background:var(--paper);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow-md);overflow:hidden;">
       <div style="background:var(--maroon-deep);color:#f7ebd8;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;">
         <strong style="font-family:var(--serif);font-size:1.05rem;">Aradhana assistant</strong>
-        <button id="chatClose" style="background:none;border:0;color:#f7ebd8;font-size:1.2rem;cursor:pointer;">Ã—</button>
+        <button id="chatClose" style="background:none;border:0;color:#f7ebd8;font-size:1.2rem;cursor:pointer;">×</button>
       </div>
       <div id="chatMessages" style="padding:12px;max-height:280px;overflow:auto;font-size:.82rem;display:grid;gap:8px;"></div>
       <div style="padding:10px;border-top:1px solid var(--line-soft);display:flex;gap:6px;">
-        <input id="chatInput" placeholder="Ask about pujas, booking, paymentsâ€¦" style="flex:1;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:.8rem;" />
+        <input id="chatInput" placeholder="Ask about pujas, booking, payments…" style="flex:1;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:.8rem;" />
         <button id="chatSend" style="background:var(--saffron);color:#fff;border:0;border-radius:8px;padding:8px 12px;font-size:.8rem;cursor:pointer;">Send</button>
       </div>
     </div>

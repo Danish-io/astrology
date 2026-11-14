@@ -3,7 +3,7 @@ import {
   state, API, escapeHtml, fmtDate, fmtTime, fmtDateTime, initials, badge, icon, iconFilled,
   stars, layout, sectionHead, empty, spinner, pageHero, breadcrumb, serviceIcon, setting,
   panditName, panditShort, siteName, parseJson, ensure, navigate, toast, modal, qsa
-} from './core.js?v=14';
+} from './core.js?v=15';
 
 function serviceCard(s) {
   const artClass = s.type === 'CONSULTATION' ? 'art-consult' : (s.type === 'EVENT' ? 'art-event' : '');
@@ -48,9 +48,9 @@ function eventCard(e) {
         <span>${icon('map')} ${escapeHtml(e.venue)}</span>
         ${e.online ? `<span>${icon('spark')} Online option available</span>` : ''}
       </div>
-      <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">${escapeHtml((e.description || '').slice(0, 150))}${(e.description||'').length>150?'â€¦':''}</p>
+      <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">${escapeHtml((e.description || '').slice(0, 150))}${(e.description||'').length>150?'…':''}</p>
       <div class="event-card-footer">
-        <span class="${full ? 'seats-pill full' : 'seats-pill'}">${full ? 'Full Â· waitlist open' : `${e.seatsLeft} of ${e.capacity} seats left`}</span>
+        <span class="${full ? 'seats-pill full' : 'seats-pill'}">${full ? 'Full · waitlist open' : `${e.seatsLeft} of ${e.capacity} seats left`}</span>
         <a class="text-link" href="#/events/${e.slug}">${full ? 'Join waitlist' : 'Register'} ${icon('arrow')}</a>
       </div>
     </div>
@@ -60,8 +60,8 @@ function eventCard(e) {
 function testimonialMini(t) {
   return `<div class="testimonial-mini">
     ${stars(t.rating)}
-    <p>â€œ${escapeHtml(t.quote)}â€</p>
-    <strong>${escapeHtml(t.customer_name)}</strong><span>Â· ${escapeHtml(t.city || '')}</span>
+    <p>“${escapeHtml(t.quote)}”</p>
+    <strong>${escapeHtml(t.customer_name)}</strong><span>· ${escapeHtml(t.city || '')}</span>
   </div>`;
 }
 
@@ -87,7 +87,7 @@ export async function renderHome() {
     <div class="container">
       <div class="hero-grid">
         <div class="hero-copy">
-          <span class="eyebrow">${escapeHtml(home.settings?.['site.pandit_title'] || 'Vedic priest & jyotish guide Â· Hyderabad')}</span>
+          <span class="eyebrow">${escapeHtml(home.settings?.['site.pandit_title'] || 'Vedic priest & jyotish guide · Hyderabad')}</span>
           <h1 class="display">A sacred pause for the life you are living.</h1>
           <p class="lede">Request a puja, a personal jyotish consultation, or a seat at a sacred gathering with ${escapeHtml(panditName())}. Every request is read personally. We call you to confirm. No payment is taken online.</p>
           <div class="hero-actions">
@@ -106,7 +106,7 @@ export async function renderHome() {
           <div class="hero-art"><img src="/assets/hero.svg" alt="Ceremonial arch with a lotus and a lit diya" /></div>
           <div class="hero-float">
             <div class="icon-round" style="width:36px;height:36px;border-radius:50%;background:var(--gold-pale);color:var(--maroon);display:grid;place-items:center">${icon('calendar')}</div>
-            <div><strong>Next available</strong><span>${pandit.nextSlot ? fmtDateTime(pandit.nextSlot) : 'Checking the calendarâ€¦'}</span></div>
+            <div><strong>Next available</strong><span>${pandit.nextSlot ? fmtDateTime(pandit.nextSlot) : 'Checking the calendar…'}</span></div>
           </div>
           <div class="hero-seal"><b>${escapeHtml((panditName().split(' ').slice(-1)[0] || 'R').slice(0,1))}</b>${escapeHtml(panditName().split(' ').slice(1).join(' '))}</div>
         </div>
@@ -135,14 +135,14 @@ export async function renderHome() {
         <div class="container" style="padding:0 28px">
           <div class="panchang-title">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg>
-            <div><strong>Todayâ€™s panchang</strong><span>${escapeHtml(panchang.dateLabel || '')}</span></div>
+            <div><strong>Today’s panchang</strong><span>${escapeHtml(panchang.dateLabel || '')}</span></div>
           </div>
           <div class="panchang-items">
             <div class="panchang-item"><span>Tithi</span><strong>${escapeHtml(panchang.tithi || '')}</strong></div>
             <div class="panchang-item"><span>Nakshatra</span><strong>${escapeHtml(panchang.nakshatra || '')}</strong></div>
             <div class="panchang-item"><span>Rahu kalam</span><strong>${escapeHtml(panchang.rahuKalam || '')}</strong></div>
             <div class="panchang-item"><span>Abhijit</span><strong>${escapeHtml(panchang.abhijit || '')}</strong></div>
-            <div class="panchang-item"><span>Sunrise Â· Sunset</span><strong>${escapeHtml(panchang.sunrise || '')} Â· ${escapeHtml(panchang.sunset || '')}</strong></div>
+            <div class="panchang-item"><span>Sunrise · Sunset</span><strong>${escapeHtml(panchang.sunrise || '')} · ${escapeHtml(panchang.sunset || '')}</strong></div>
           </div>
           <a class="text-link" href="#/panchang" style="color:var(--gold-light);border-color:transparent">Full almanac ${icon('arrow')}</a>
         </div>
@@ -157,7 +157,7 @@ export async function renderHome() {
         <article class="path-card">
           <div class="path-icon">${pathwayIcons.puja}</div>
           <h3>Pujas &amp; homam</h3>
-          <p>Griha pravesh, satyanarayana, rudrabhishek, navagraha shanti and more â€” performed at your home, in a temple, or online.</p>
+          <p>Griha pravesh, satyanarayana, rudrabhishek, navagraha shanti and more — performed at your home, in a temple, or online.</p>
           <a class="text-link" href="#/pujas">Browse pujas ${icon('arrow')}</a>
         </article>
         <article class="path-card">
@@ -203,11 +203,11 @@ export async function renderHome() {
             <div><span>City</span><strong>${escapeHtml(pandit.city || 'Hyderabad')}</strong></div>
             <div><span>Languages</span><strong>${escapeHtml((pandit.languages || []).join(', '))}</strong></div>
             <div><span>Specialities</span><strong>${escapeHtml((pandit.specializations || []).slice(0,4).join(', '))}</strong></div>
-            <div><span>Rating</span><strong>${Number(pandit.rating || 4.8).toFixed(1)} Â· ${pandit.reviewCount || 0} reviews</strong></div>
+            <div><span>Rating</span><strong>${Number(pandit.rating || 4.8).toFixed(1)} · ${pandit.reviewCount || 0} reviews</strong></div>
           </div>
-          <p class="pandit-quote">â€œI perform each ceremony myself and explain every step, so grandparents and children can take part together.â€</p>
+          <p class="pandit-quote">“I perform each ceremony myself and explain every step, so grandparents and children can take part together.”</p>
           <div class="row" style="gap:12px">
-            <a class="btn btn-maroon" href="#/about">Read Pandit jiâ€™s story ${icon('arrow')}</a>
+            <a class="btn btn-maroon" href="#/about">Read Pandit ji’s story ${icon('arrow')}</a>
             <a class="btn btn-outline" href="#/providers/${pandit.slug || 'pandit-ramesh-sharma'}">Profile & reviews</a>
           </div>
         </div>
@@ -239,8 +239,8 @@ export async function renderHome() {
       <div class="testimonial-grid">
         ${featuredReview ? `<div class="testimonial-feature">
           ${stars(featuredReview.rating)}
-          <blockquote>â€œ${escapeHtml(featuredReview.quote)}â€</blockquote>
-          <div class="testimonial-author"><div class="avatar">${initials(featuredReview.customer_name)}</div><div><strong>${escapeHtml(featuredReview.customer_name)}</strong><span>${escapeHtml(featuredReview.city || '')} Â· ${escapeHtml(featuredReview.service_name || '')}</span></div></div>
+          <blockquote>“${escapeHtml(featuredReview.quote)}”</blockquote>
+          <div class="testimonial-author"><div class="avatar">${initials(featuredReview.customer_name)}</div><div><strong>${escapeHtml(featuredReview.customer_name)}</strong><span>${escapeHtml(featuredReview.city || '')} · ${escapeHtml(featuredReview.service_name || '')}</span></div></div>
         </div>` : ''}
         <div class="testimonial-stack">${testimonials.filter(t=>t!==featuredReview).slice(0,3).map(testimonialMini).join('')}</div>
       </div>
@@ -253,8 +253,8 @@ export async function renderHome() {
         <div>
           <span class="eyebrow">Daily horoscope</span>
           <h2 class="display" style="margin:12px 0 14px">What is the sky saying today?</h2>
-          <p class="lede">A gentle, non-fatalistic reading for each of the twelve signs â€” love, career, money and health â€” refreshed every day.</p>
-          <a class="btn btn-maroon" style="margin-top:20px" href="#/horoscope">Open todayâ€™s horoscope ${icon('arrow')}</a>
+          <p class="lede">A gentle, non-fatalistic reading for each of the twelve signs — love, career, money and health — refreshed every day.</p>
+          <a class="btn btn-maroon" style="margin-top:20px" href="#/horoscope">Open today’s horoscope ${icon('arrow')}</a>
         </div>
         <div>
           <div class="sign-grid">
@@ -297,12 +297,12 @@ export async function renderHome() {
       const date = document.getElementById('checkDate')?.value;
       const res = document.getElementById('checkResult');
       res.classList.remove('hide');
-      res.innerHTML = `<span class="spinner" style="width:14px;height:14px;border-color:rgba(87,31,43,.2);border-top-color:var(--maroon)"></span> Checkingâ€¦`;
+      res.innerHTML = `<span class="spinner" style="width:14px;height:14px;border-color:rgba(87,31,43,.2);border-top-color:var(--maroon)"></span> Checking…`;
       try {
         const data = await API.get(`/api/check?${service ? `service=${encodeURIComponent(service)}&` : ''}date=${encodeURIComponent(date)}`);
         const count = data.totalAvailable || 0;
         res.innerHTML = count
-          ? `<strong>${count} slot${count===1?'':'s'} open on ${escapeHtml(fmtDate(date+'T12:00:00+05:30','date'))}.</strong> <a href="#/availability?${service?`service=${service}&`:''}date=${date}">Choose a time â†’</a>`
+          ? `<strong>${count} slot${count===1?'':'s'} open on ${escapeHtml(fmtDate(date+'T12:00:00+05:30','date'))}.</strong> <a href="#/availability?${service?`service=${service}&`:''}date=${date}">Choose a time →</a>`
           : `No open slots that day, but you can still <a href="#/availability?${service?`service=${service}&`:''}date=${date}">send a request with an alternative time</a>.`;
       } catch (e) {
         res.innerHTML = `Could not check right now: ${escapeHtml(e.message)}`;
@@ -377,9 +377,9 @@ export async function renderServiceDetail(params) {
           <div class="detail-hero-art"><div class="service-art ${s.type==='CONSULTATION'?'art-consult':''}">${serviceIcon(s.slug,s.type)}<span class="art-label">${s.type==='CONSULTATION'?'Guidance':'Puja'}</span></div></div>
           <div class="detail-meta">
             <div><span>Duration</span><strong>${s.duration} minutes</strong></div>
-            <div><span>Category</span><strong>${escapeHtml(s.category?.name || 'â€”')}</strong></div>
-            <div><span>Locations</span><strong>${escapeHtml((s.locations||[]).join(', ').replace(/_/g,' ') || 'â€”')}</strong></div>
-            <div><span>Participants</span><strong>${s.minParticipants}â€“${s.maxParticipants}</strong></div>
+            <div><span>Category</span><strong>${escapeHtml(s.category?.name || '—')}</strong></div>
+            <div><span>Locations</span><strong>${escapeHtml((s.locations||[]).join(', ').replace(/_/g,' ') || '—')}</strong></div>
+            <div><span>Participants</span><strong>${s.minParticipants}–${s.maxParticipants}</strong></div>
             ${s.type==='CONSULTATION' ? `<div><span>Modes</span><strong>${escapeHtml((s.modes||[]).join(', '))}</strong></div>` : ''}
           </div>
           <div class="prose">
@@ -388,15 +388,15 @@ export async function renderServiceDetail(params) {
             ${s.benefits ? `<div class="benefit-box"><h3>What it brings</h3><p>${escapeHtml(s.benefits)}</p></div>` : ''}
             ${s.preparationNotes ? `<h3>Preparation</h3><p>${escapeHtml(s.preparationNotes)}</p>` : ''}
           </div>
-          ${data.samagri?.length ? `<h3 class="display" style="font-size:1.5rem;margin:30px 0 6px">Samagri</h3><p class="muted small" style="margin-bottom:10px">Materials and who brings them.</p><div class="samagri-list">${data.samagri.map(i=>`<div class="samagri-row"><span>${escapeHtml(i.item_name)} <small style="color:var(--muted-2)">Â· ${escapeHtml(i.quantity_text||'')}</small></span><span class="by">${escapeHtml(i.provided_by)}</span></div>`).join('')}</div>` : ''}
+          ${data.samagri?.length ? `<h3 class="display" style="font-size:1.5rem;margin:30px 0 6px">Samagri</h3><p class="muted small" style="margin-bottom:10px">Materials and who brings them.</p><div class="samagri-list">${data.samagri.map(i=>`<div class="samagri-row"><span>${escapeHtml(i.item_name)} <small style="color:var(--muted-2)">· ${escapeHtml(i.quantity_text||'')}</small></span><span class="by">${escapeHtml(i.provided_by)}</span></div>`).join('')}</div>` : ''}
           ${data.faqs?.length ? `<h3 class="display" style="font-size:1.5rem;margin:30px 0 6px">Questions</h3><div class="faq-list">${data.faqs.map(f=>`<div class="faq-item"><button class="faq-q">${escapeHtml(f.question)}<span class="faq-plus">${icon('plus')}</span></button><div class="faq-a"><div class="faq-a-inner">${escapeHtml(f.answer)}</div></div></div>`).join('')}</div>` : ''}
-          ${data.reviews?.length ? `<h3 class="display" style="font-size:1.5rem;margin:30px 0 14px">Reviews</h3><div class="review-list">${data.reviews.map(r=>`<div class="review-item"><div class="review-head"><div><strong>${escapeHtml(r.name)}</strong><span> Â· ${fmtDate(r.createdAt,'date')}</span></div>${stars(r.rating)}</div>${r.title?`<h4>${escapeHtml(r.title)}</h4>`:''}<p>${escapeHtml(r.comment)}</p>${r.reply?`<div class="review-reply"><strong>Pandit ji:</strong> ${escapeHtml(r.reply)}</div>`:''}</div>`).join('')}</div>` : ''}
+          ${data.reviews?.length ? `<h3 class="display" style="font-size:1.5rem;margin:30px 0 14px">Reviews</h3><div class="review-list">${data.reviews.map(r=>`<div class="review-item"><div class="review-head"><div><strong>${escapeHtml(r.name)}</strong><span> · ${fmtDate(r.createdAt,'date')}</span></div>${stars(r.rating)}</div>${r.title?`<h4>${escapeHtml(r.title)}</h4>`:''}<p>${escapeHtml(r.comment)}</p>${r.reply?`<div class="review-reply"><strong>Pandit ji:</strong> ${escapeHtml(r.reply)}</div>`:''}</div>`).join('')}</div>` : ''}
           ${data.related?.length ? `<h3 class="display" style="font-size:1.5rem;margin:34px 0 14px">You may also like</h3><div class="service-grid">${data.related.map(serviceCard).join('')}</div>` : ''}
         </div>
         <aside>
           <div class="booking-card">
             <div class="booking-card-head">
-              <div class="price">${escapeHtml(s.priceText || 'Discussed after request')}<small>Indicative contribution Â· settled offline</small></div>
+              <div class="price">${escapeHtml(s.priceText || 'Discussed after request')}<small>Indicative contribution · settled offline</small></div>
             </div>
             <div class="booking-card-body">
               <a class="btn btn-primary btn-block btn-lg" href="#/book/${s.type==='CONSULTATION'?'consultation':'puja'}/${s.slug}">Request this ${s.type==='CONSULTATION'?'consultation':'puja'} ${icon('arrow')}</a>
@@ -423,11 +423,11 @@ export async function renderServiceDetail(params) {
 export async function renderGuidance() {
   const data = await API.get('/api/services?type=CONSULTATION');
   const inner = `
-  ${pageHero('Personal guidance', 'A reading, not a prediction', 'Birth chart, kundli matching, career and year-ahead consultations with Pandit Ramesh Sharma â€” in Telugu, Hindi, English or Sanskrit.')}
+  ${pageHero('Personal guidance', 'A reading, not a prediction', 'Birth chart, kundli matching, career and year-ahead consultations with Pandit Ramesh Sharma — in Telugu, Hindi, English or Sanskrit.')}
   <section class="section-tight">
     <div class="container">
       <div class="catalog-bar" style="position:static;background:transparent;padding:0 0 18px;border:0">
-        <div style="max-width:640px"><p class="lede">Every consultation begins with your question. There are no fear-based predictions and no miracle promises â€” just a careful reading of your chart and a practical next step.</p></div>
+        <div style="max-width:640px"><p class="lede">Every consultation begins with your question. There are no fear-based predictions and no miracle promises — just a careful reading of your chart and a practical next step.</p></div>
         <a class="btn btn-primary" href="#/book/consultation/${(data.services[0]||{}).slug||''}">Begin a consultation ${icon('arrow')}</a>
       </div>
       <div class="service-grid">${(data.services||[]).map(serviceCard).join('')}</div>
@@ -436,7 +436,7 @@ export async function renderGuidance() {
   <section class="section bg-paper" style="border-top:1px solid var(--line-soft)">
     <div class="container">
       <div class="grid-3">
-        <div class="benefit-box" style="margin:0"><h3>Before the session</h3><p>Share your date, time and place of birth. If you do not know the time, tick â€œI donâ€™t knowâ€ â€” we work with a solar chart.</p></div>
+        <div class="benefit-box" style="margin:0"><h3>Before the session</h3><p>Share your date, time and place of birth. If you do not know the time, tick “I don’t know” — we work with a solar chart.</p></div>
         <div class="benefit-box" style="margin:0"><h3>During the session</h3><p>Voice, video or in person, in your language. Ask anything. We go at your pace.</p></div>
         <div class="benefit-box" style="margin:0"><h3>After the session</h3><p>A written summary with key dates and a simple remedy, plus one follow-up question by email.</p></div>
       </div>
@@ -485,7 +485,7 @@ export async function renderEventDetail(params) {
           <div class="detail-meta">
             <div><span>When</span><strong>${fmtDateTime(e.startAt)}</strong></div>
             <div><span>Where</span><strong>${escapeHtml(e.venue)}</strong></div>
-            <div><span>Seats</span><strong>${e.seatsTaken} / ${e.capacity}${full?' Â· full':''}</strong></div>
+            <div><span>Seats</span><strong>${e.seatsTaken} / ${e.capacity}${full?' · full':''}</strong></div>
             <div><span>Online</span><strong>${e.online ? 'Yes, live stream' : 'In person only'}</strong></div>
           </div>
           <div class="prose">
@@ -493,7 +493,7 @@ export async function renderEventDetail(params) {
             ${e.instructions ? `<h3>Instructions</h3><p>${escapeHtml(e.instructions)}</p>` : ''}
             ${e.dressCode ? `<h3>Dress code</h3><p>${escapeHtml(e.dressCode)}</p>` : ''}
           </div>
-          ${data.sessions?.length ? `<h3 class="display" style="font-size:1.5rem;margin:28px 0 10px">Schedule</h3><div class="samagri-list">${data.sessions.map(s=>`<div class="samagri-row"><span>${escapeHtml(s.title)}</span><span class="by">${fmtTime(s.startAt)} â€“ ${fmtTime(s.endAt)}</span></div>`).join('')}</div>` : ''}
+          ${data.sessions?.length ? `<h3 class="display" style="font-size:1.5rem;margin:28px 0 10px">Schedule</h3><div class="samagri-list">${data.sessions.map(s=>`<div class="samagri-row"><span>${escapeHtml(s.title)}</span><span class="by">${fmtTime(s.startAt)} – ${fmtTime(s.endAt)}</span></div>`).join('')}</div>` : ''}
           ${data.lead ? `<div class="person-card" style="margin-top:24px"><div class="avatar">${initials(data.lead.name)}</div><div><strong>${escapeHtml(data.lead.name)}</strong><span>Lead for this gathering</span></div></div>` : ''}
           ${data.faqs?.length ? `<h3 class="display" style="font-size:1.5rem;margin:30px 0 6px">Questions</h3><div class="faq-list">${data.faqs.map(f=>`<div class="faq-item"><button class="faq-q">${escapeHtml(f.question)}<span class="faq-plus">${icon('plus')}</span></button><div class="faq-a"><div class="faq-a-inner">${escapeHtml(f.answer)}</div></div></div>`).join('')}</div>` : ''}
           ${data.related?.length ? `<h3 class="display" style="font-size:1.5rem;margin:30px 0 14px">Other gatherings</h3><div class="event-grid">${data.related.map(eventCard).join('')}</div>` : ''}
@@ -501,7 +501,7 @@ export async function renderEventDetail(params) {
         <aside>
           <div class="booking-card">
             <div class="booking-card-head">
-              <div class="price">${escapeHtml(e.contributionText || 'Contribution discussed offline')}<small>Settled offline Â· no online payment</small></div>
+              <div class="price">${escapeHtml(e.contributionText || 'Contribution discussed offline')}<small>Settled offline · no online payment</small></div>
             </div>
             <div class="booking-card-body">
               <a class="btn btn-primary btn-block btn-lg" href="#/book/event/${e.slug}">${full ? 'Join the waitlist' : 'Register for this gathering'} ${icon('arrow')}</a>
@@ -541,7 +541,7 @@ export async function renderHoroscope(query = {}) {
         <div>
           <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:18px;flex-wrap:wrap">
             <span style="font-size:2.6rem;color:var(--maroon)">${escapeHtml(r.symbol || '')}</span>
-            <div><h2 class="display" style="font-size:2.2rem;margin:0">${escapeHtml(r.sign_name || sign)} <em style="color:var(--saffron);font-size:1rem">${escapeHtml(data.periodLabel || '')}</em></h2><p class="muted small">${escapeHtml(r.sign_dates || '')} Â· ${escapeHtml(r.element || '')} Â· ruled by ${escapeHtml(r.planet || '')}</p></div>
+            <div><h2 class="display" style="font-size:2.2rem;margin:0">${escapeHtml(r.sign_name || sign)} <em style="color:var(--saffron);font-size:1rem">${escapeHtml(data.periodLabel || '')}</em></h2><p class="muted small">${escapeHtml(r.sign_dates || '')} · ${escapeHtml(r.element || '')} · ruled by ${escapeHtml(r.planet || '')}</p></div>
           </div>
           <div class="benefit-box"><h3>Summary</h3><p>${escapeHtml(r.summary || '')}</p></div>
           <div class="grid-2" style="margin-top:14px">
@@ -558,7 +558,7 @@ export async function renderHoroscope(query = {}) {
           <p class="muted small" style="margin-top:22px">Horoscopes are guidance, not fate. For a reading of your own chart, <a class="text-link" href="#/guidance">book a consultation ${icon('arrow')}</a>.</p>
         </div>
       </div>
-      ${data.panchang ? `<div style="margin-top:40px">${sectionHead('Todayâ€™s panchang','Auspicious windows for the day','')}${panchangCard(data.panchang)}</div>` : ''}
+      ${data.panchang ? `<div style="margin-top:40px">${sectionHead('Today’s panchang','Auspicious windows for the day','')}${panchangCard(data.panchang)}</div>` : ''}
     </div>
   </section>`;
   return layout(inner);
@@ -578,7 +578,7 @@ export async function renderPanchang(query = {}) {
   const data = await API.get(`/api/panchang?date=${encodeURIComponent(date)}`);
   const p = data.panchang;
   const inner = `
-  ${pageHero('Panchang', 'Todayâ€™s almanac', 'Tithi, nakshatra, yoga, karana, sunrise, sunset, rahu kalam and abhijit for Hyderabad.')}
+  ${pageHero('Panchang', 'Today’s almanac', 'Tithi, nakshatra, yoga, karana, sunrise, sunset, rahu kalam and abhijit for Hyderabad.')}
   <section class="section-tight">
     <div class="container">
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px">
@@ -586,11 +586,11 @@ export async function renderPanchang(query = {}) {
       </div>
       <div class="benefit-box" style="padding:28px">
         <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:12px;margin-bottom:20px">
-          <div><h2 class="display" style="font-size:2rem;margin:0">${escapeHtml(p.dateLabel)}</h2><p class="muted small">${escapeHtml(p.weekday)} Â· ${escapeHtml(p.location)}</p></div>
+          <div><h2 class="display" style="font-size:2rem;margin:0">${escapeHtml(p.dateLabel)}</h2><p class="muted small">${escapeHtml(p.weekday)} · ${escapeHtml(p.location)}</p></div>
           <span class="badge ${p.auspicious?'badge-green':'badge-amber'}">${p.auspicious?'Auspicious for puja':'Proceed with care'}</span>
         </div>
         <div class="grid-4">
-          ${[['Tithi',p.tithi,p.paksha],['Nakshatra',p.nakshatra,p.yoga],['Karana',p.karana,p.moonPhase],['Sunrise / Sunset',p.sunrise+' Â· '+p.sunset,'']].map(([k,v,s])=>`<div><span class="eyebrow no-line" style="color:var(--muted-2)">${k}</span><strong style="display:block;font-family:var(--serif);font-size:1.2rem;color:var(--maroon);margin-top:4px">${escapeHtml(v)}</strong><small class="muted">${escapeHtml(s)}</small></div>`).join('')}
+          ${[['Tithi',p.tithi,p.paksha],['Nakshatra',p.nakshatra,p.yoga],['Karana',p.karana,p.moonPhase],['Sunrise / Sunset',p.sunrise+' · '+p.sunset,'']].map(([k,v,s])=>`<div><span class="eyebrow no-line" style="color:var(--muted-2)">${k}</span><strong style="display:block;font-family:var(--serif);font-size:1.2rem;color:var(--maroon);margin-top:4px">${escapeHtml(v)}</strong><small class="muted">${escapeHtml(s)}</small></div>`).join('')}
         </div>
         <div class="grid-4" style="margin-top:18px">
           ${[['Rahu kalam',p.rahuKalam,'Avoid new beginnings'],['Abhijit muhurat',p.abhijit,'Favourable window'],['Yoga',p.yoga,''],['Moon phase',p.moonPhase,'']].map(([k,v,s])=>`<div><span class="eyebrow no-line" style="color:var(--muted-2)">${k}</span><strong style="display:block;font-family:var(--serif);font-size:1.2rem;color:var(--maroon);margin-top:4px">${escapeHtml(v)}</strong><small class="muted">${escapeHtml(s)}</small></div>`).join('')}
@@ -599,7 +599,7 @@ export async function renderPanchang(query = {}) {
       </div>
       <h3 class="display" style="font-size:1.5rem;margin:30px 0 12px">The week ahead</h3>
       <div style="display:grid;gap:10px">
-        ${(data.nearby||[]).map(n=>`<div class="samagri-row"><span><strong>${fmtDate(n.date+'T12:00:00+05:30','date')}</strong> Â· ${escapeHtml(n.tithi)} Â· ${escapeHtml(n.nakshatra)}</span><span class="by" style="color:${n.auspicious?'var(--green)':'var(--amber)'}">${n.auspicious?'Auspicious':'Caution'}</span></div>`).join('')}
+        ${(data.nearby||[]).map(n=>`<div class="samagri-row"><span><strong>${fmtDate(n.date+'T12:00:00+05:30','date')}</strong> · ${escapeHtml(n.tithi)} · ${escapeHtml(n.nakshatra)}</span><span class="by" style="color:${n.auspicious?'var(--green)':'var(--amber)'}">${n.auspicious?'Auspicious':'Caution'}</span></div>`).join('')}
       </div>
       <h3 class="display" style="font-size:1.5rem;margin:30px 0 12px">Festivals & observances</h3>
       <div class="grid-3">${(data.festivals||[]).map(f=>`<div class="benefit-box" style="margin:0"><h3>${escapeHtml(f.emoji||'') } ${escapeHtml(f.name)}</h3><p>${fmtDate(f.date+'T12:00:00+05:30','long')}<br>${escapeHtml(f.description)}</p>${f.service?`<a class="text-link" href="#/services/${f.service.slug}" style="margin-top:8px">Related service ${icon('arrow')}</a>`:''}</div>`).join('')}</div>
@@ -626,7 +626,7 @@ export async function renderAbout() {
             <div><span>City</span><strong>${escapeHtml(pandit.city||'Hyderabad')}</strong></div>
             <div><span>Languages</span><strong>${escapeHtml((pandit.languages||[]).join(', '))}</strong></div>
             <div><span>Service radius</span><strong>${escapeHtml(String(pandit.serviceRadiusKm||35))} km</strong></div>
-            <div><span>Rating</span><strong>${Number(pandit.rating||4.8).toFixed(1)} Â· ${pandit.reviewCount||0} reviews</strong></div>
+            <div><span>Rating</span><strong>${Number(pandit.rating||4.8).toFixed(1)} · ${pandit.reviewCount||0} reviews</strong></div>
           </div>
           <div class="row" style="gap:12px;margin-top:18px">
             <a class="btn btn-primary" href="#/pujas">Request a puja ${icon('arrow')}</a>
@@ -645,7 +645,7 @@ export async function renderAbout() {
   <section class="section">
     <div class="container">
       ${sectionHead('Reviews','What families say','')}
-      <div class="review-list">${(p?.reviews||[]).map(r=>`<div class="review-item"><div class="review-head"><div><strong>${escapeHtml(r.name)}</strong><span> Â· ${fmtDate(r.createdAt,'date')}</span></div>${stars(r.rating)}</div>${r.title?`<h4>${escapeHtml(r.title)}</h4>`:''}<p>${escapeHtml(r.comment)}</p>${r.reply?`<div class="review-reply"><strong>Pandit ji:</strong> ${escapeHtml(r.reply)}</div>`:''}</div>`).join('') || empty('No reviews yet','Be the first to leave one after your ceremony.')}</div>
+      <div class="review-list">${(p?.reviews||[]).map(r=>`<div class="review-item"><div class="review-head"><div><strong>${escapeHtml(r.name)}</strong><span> · ${fmtDate(r.createdAt,'date')}</span></div>${stars(r.rating)}</div>${r.title?`<h4>${escapeHtml(r.title)}</h4>`:''}<p>${escapeHtml(r.comment)}</p>${r.reply?`<div class="review-reply"><strong>Pandit ji:</strong> ${escapeHtml(r.reply)}</div>`:''}</div>`).join('') || empty('No reviews yet','Be the first to leave one after your ceremony.')}</div>
     </div>
   </section>`;
   return layout(inner);
@@ -690,7 +690,7 @@ export async function renderContact() {
         </form>
         <div>
           <div class="benefit-box"><h3>Call or WhatsApp</h3><p>${escapeHtml(setting('site.contact_phone','+91 90000 12345'))}<br>${escapeHtml(setting('site.contact_whatsapp','+91 90000 12345'))}</p></div>
-          <div class="benefit-box"><h3>Visit</h3><p>${escapeHtml(setting('site.address','12 Lotus Lane, Jubilee Hills, Hyderabad 500033'))}<br>${escapeHtml(setting('site.hours','Monâ€“Sat, 9:00 AM â€“ 8:00 PM IST'))}</p></div>
+          <div class="benefit-box"><h3>Visit</h3><p>${escapeHtml(setting('site.address','12 Lotus Lane, Jubilee Hills, Hyderabad 500033'))}<br>${escapeHtml(setting('site.hours','Mon–Sat, 9:00 AM – 8:00 PM IST'))}</p></div>
           <div class="benefit-box"><h3>Email</h3><p>${escapeHtml(setting('site.email','namaste@aradhana.in'))}</p></div>
         </div>
       </div>
@@ -735,7 +735,7 @@ export async function renderPolicy(kind) {
   const body = {
     privacy: 'Birth details and phone numbers are visible only to Pandit ji and the person handling your booking. Lists are masked, access is logged, and you can request deletion at any time from your account. We do not sell or share your data with third parties. Data is retained for the period set in settings (default 36 months) before anonymisation.',
     terms: 'Aradhana is a request-based booking service. Submitting a request does not guarantee a slot until it is confirmed by our team. No payment is taken online; any contribution is agreed and settled directly with Pandit ji. Content on this site (horoscopes, panchang) is guidance and not a substitute for professional advice.',
-    cancellation: 'There is no online payment, so there is nothing to refund on the website. For a confirmed booking, please give at least 12 hours notice so Pandit jiâ€™s time can be released. Cancellation after that window follows the policy shared on your confirmation call. Waitlist registrations can be cancelled at any time at no cost.',
+    cancellation: 'There is no online payment, so there is nothing to refund on the website. For a confirmed booking, please give at least 12 hours notice so Pandit ji’s time can be released. Cancellation after that window follows the policy shared on your confirmation call. Waitlist registrations can be cancelled at any time at no cost.',
   };
   const inner = `
   ${pageHero('Policy', titles[kind] || 'Policy', '')}
@@ -763,7 +763,7 @@ export async function renderAvailability(query = {}) {
         ${days.map(d => `<button class="slot-day ${d.date===selected?'active':''} ${d.count?'':'empty'}" data-date="${d.date}">
           <span class="wd">${escapeHtml(d.weekday)}</span>
           <span class="dd">${d.day}</span>
-          <span class="ct">${d.count ? d.count + ' open' : 'â€”'}</span>
+          <span class="ct">${d.count ? d.count + ' open' : '—'}</span>
         </button>`).join('')}
       </div>
       ${['morning','afternoon','evening'].map(g => groups[g]?.length ? `<div class="slot-group"><h4>${g}</h4><div class="slot-chips">${groups[g].map(s=>`<button class="slot-chip ${s.status!=='AVAILABLE'?'tentative':''}" data-slot="${s.id}">${fmtTime(s.startAt)}<small>${s.status==='AVAILABLE'?'available':'request pending'}</small></button>`).join('')}</div></div>` : '').join('')}

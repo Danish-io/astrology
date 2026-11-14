@@ -8,7 +8,7 @@
  *    /api/config. The service_role key NEVER reaches the browser.
  *  - Credentials are read from server-injected config, never hardcoded.
  *  - The official SDK is loaded as an ES module (no bundler in this
- *    project â€” the site already loads fonts from a CDN the same way).
+ *    project — the site already loads fonts from a CDN the same way).
  */
 
 let _client = null;

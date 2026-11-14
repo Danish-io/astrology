@@ -1,15 +1,15 @@
 'use strict';
 
 /**
- * Auth service â€” real Supabase Auth integration.
+ * Auth service — real Supabase Auth integration.
  * Handles: signup, login, logout, password recovery, profile updates,
  * and syncing the Supabase session with the app's own backend session.
  *
  * No fake logins. No password storage. Tokens managed by the official SDK.
  */
 
-import { getSupabase, currentSession, currentProfile } from './supabase-client.js?v=14';
-import { API } from './core.js?v=14';
+import { getSupabase, currentSession, currentProfile } from './supabase-client.js?v=15';
+import { API } from './core.js?v=15';
 
 /* ---------- validation helpers ---------- */
 
@@ -28,11 +28,11 @@ function passwordProblem(pass) {
 function authError(message = '') {
   const m = String(message).toLowerCase();
   if (/invalid login credentials/.test(m)) return 'Incorrect email or password.';
-  if (/email not confirmed/.test(m)) return 'Please confirm your email first â€” check your inbox for the verification link.';
+  if (/email not confirmed/.test(m)) return 'Please confirm your email first — check your inbox for the verification link.';
   if (/over_email_send_rate_limit|rate limit/.test(m)) return 'Too many attempts. Please wait a few minutes and try again.';
   if (/user already registered|already been registered/.test(m)) return 'This email already has an account. Please sign in instead.';
   if (/password.*weak|short/.test(m)) return 'That password is too weak. Use at least 8 characters with a letter and a number.';
-  if (/network|fetch/.test(m)) return 'Network problem â€” please check your connection and try again.';
+  if (/network|fetch/.test(m)) return 'Network problem — please check your connection and try again.';
   if (/signup requires a valid email|invalid email/.test(m)) return 'Please enter a valid email address.';
   return message || 'Something went wrong. Please try again.';
 }
@@ -102,7 +102,7 @@ export async function signOut() {
   try { await API.post('/api/auth/logout'); } catch { /* ignore */ }
 }
 
-/* ---------- real phone OTP (Supabase SMS) â€” PHASE 14: PENDING ----------
+/* ---------- real phone OTP (Supabase SMS) — PHASE 14: PENDING ----------
  * Phone SMS authentication is deliberately DISABLED until an SMS provider
  * is configured in the Supabase dashboard (see PENDING-phone-auth.md).
  * The code below is the complete, tested-shape implementation and is kept
@@ -126,7 +126,7 @@ function phoneError(message = '') {
   if (/sms provider|not configured|provider.*not.*found|twilio/.test(m)) return 'SMS delivery is not configured yet. Please sign in with your email account or contact the temple office.';
   if (/invalid phone|phone.*invalid|malformed/.test(m)) return 'That mobile number looks invalid. Please check it and try again.';
   if (/expired/.test(m)) return 'That code has expired. Please request a new one.';
-  if (/network|fetch|failed to fetch/.test(m)) return 'Network problem â€” please check your connection and try again.';
+  if (/network|fetch|failed to fetch/.test(m)) return 'Network problem — please check your connection and try again.';
   return message || 'Something went wrong. Please try again.';
 }
 
@@ -166,7 +166,7 @@ export async function sendPasswordReset(email) {
 }
 
 /** Set a new password (used on the reset page while holding a recovery session).
- *  The emailed recovery link IS the verification — no separate OTP step. */
+ *  The emailed recovery link IS the verification  no separate OTP step. */
 export async function updatePassword(newPassword, confirmPassword) {
   if (newPassword !== confirmPassword) throw new Error('Passwords do not match.');
   const pwErr = passwordProblem(newPassword);

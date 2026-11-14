@@ -2,9 +2,9 @@
 import {
   state, API, escapeHtml, fmtDate, fmtTime, fmtDateTime, initials, badge, icon, stars,
   layout, pageHero, empty, spinner, modal, toast, navigate, statusLabel, statusTone, parseJson, qsa
-} from './core.js?v=14';
-import * as authSupabase from './auth-supabase.js?v=14';
-import { currentSession } from './supabase-client.js?v=14';
+} from './core.js?v=15';
+import * as authSupabase from './auth-supabase.js?v=15';
+import { currentSession } from './supabase-client.js?v=15';
 
 export async function renderAccountDashboard() {
   if (!state.user) { navigate('#/login'); return layout(`<div class="spin-center"><div class="spinner"></div></div>`); }
@@ -22,7 +22,7 @@ export async function renderAccountDashboard() {
         <div class="stat-card"><span>Saved profiles</span><strong>${data.counts.profiles}</strong><small>Birth details</small></div>
       </div>
       ${next ? `<div class="next-booking">
-        <div><div class="label">Next booking</div><h3>${escapeHtml(next.service?.name || next.type)}</h3><p>${fmtDateTime(next.confirmedStartAt || next.preferredStartAt)} Â· ${escapeHtml(next.statusLabel)}</p></div>
+        <div><div class="label">Next booking</div><h3>${escapeHtml(next.service?.name || next.type)}</h3><p>${fmtDateTime(next.confirmedStartAt || next.preferredStartAt)} · ${escapeHtml(next.statusLabel)}</p></div>
         <a class="btn btn-soft" href="#/my/bookings/${next.ref}">Open ${icon('arrow')}</a>
       </div>` : ''}
       <div class="panel">
@@ -38,7 +38,7 @@ function bookingRow(b) {
   return `<div class="booking-row">
     <div class="booking-row-main">
       <h3>${escapeHtml(b.service?.name || b.type)}</h3>
-      <p>${escapeHtml(b.ref)} Â· ${fmtDate(b.preferredStartAt,'date')} Â· ${escapeHtml(b.provider?.name || 'Pandit ji')}</p>
+      <p>${escapeHtml(b.ref)} · ${fmtDate(b.preferredStartAt,'date')} · ${escapeHtml(b.provider?.name || 'Pandit ji')}</p>
     </div>
     <div class="booking-row-side">
       ${badge(b.status)}
@@ -99,7 +99,7 @@ export async function renderBookingDetail(params) {
         <div>
           <span class="ref">${escapeHtml(b.ref)}</span>
           <h1 class="display">${escapeHtml(b.service?.name || b.type)}</h1>
-          <p>${escapeHtml(b.statusLabel)} Â· ${fmtDateTime(b.confirmedStartAt || b.preferredStartAt)}</p>
+          <p>${escapeHtml(b.statusLabel)} · ${fmtDateTime(b.confirmedStartAt || b.preferredStartAt)}</p>
         </div>
         ${badge(b.status)}
       </div>
@@ -108,13 +108,13 @@ export async function renderBookingDetail(params) {
       <div>
         <div class="panel">
           <div class="panel-head"><h2>Timeline</h2></div>
-          <div class="timeline">${(b.history||[]).map(h=>`<div class="timeline-item"><div class="timeline-dot"></div><div><strong>${escapeHtml(h.toLabel)}</strong><span> Â· ${fmtDateTime(h.at)}</span>${h.reason?`<p>${escapeHtml(h.reason)}</p>`:''}</div></div>`).join('')}</div>
+          <div class="timeline">${(b.history||[]).map(h=>`<div class="timeline-item"><div class="timeline-dot"></div><div><strong>${escapeHtml(h.toLabel)}</strong><span> · ${fmtDateTime(h.at)}</span>${h.reason?`<p>${escapeHtml(h.reason)}</p>`:''}</div></div>`).join('')}</div>
         </div>
         <div class="panel">
           <div class="panel-head"><h2>Details</h2></div>
           <div class="info-grid">
             <div><dt>Customer</dt><dd>${escapeHtml(b.customerName)}</dd></div>
-            <div><dt>Mobile</dt><dd>${escapeHtml(state.user?.phone || 'â€”')}</dd></div>
+            <div><dt>Mobile</dt><dd>${escapeHtml(state.user?.phone || '—')}</dd></div>
             <div><dt>Preferred channel</dt><dd>${escapeHtml(b.preferredContactChannel)}</dd></div>
             <div><dt>Call window</dt><dd>${escapeHtml(b.preferredCallWindow||'Any time')}</dd></div>
             <div><dt>Participants</dt><dd>${escapeHtml(String(b.participants))}</dd></div>
@@ -123,10 +123,10 @@ export async function renderBookingDetail(params) {
             ${b.puja ? `<div><dt>Location</dt><dd>${escapeHtml(b.puja.locationType.replace('_',' '))}</dd></div><div><dt>Occasion</dt><dd>${escapeHtml(b.puja.occasion)}</dd></div><div><dt>Samagri by</dt><dd>${escapeHtml(b.puja.samagriBy)}</dd></div><div><dt>Attendees</dt><dd>${escapeHtml(String(b.puja.attendeeEstimate))}</dd></div>${b.puja.sankalpamNames?.length?`<div class="full"><dt>Sankalpam</dt><dd>${escapeHtml(b.puja.sankalpamNames.join(', '))}</dd></div>`:''}` : ''}
             ${b.consultation ? `<div><dt>Mode</dt><dd>${escapeHtml(b.consultation.mode)}</dd></div><div><dt>Duration</dt><dd>${b.consultation.duration} min</dd></div><div><dt>Topics</dt><dd>${escapeHtml((b.consultation.topics||[]).join(', '))}</dd></div><div><dt>Language</dt><dd>${escapeHtml(b.consultation.language)}</dd></div>${b.consultation.question?`<div class="full"><dt>Question</dt><dd>${escapeHtml(b.consultation.question)}</dd></div>`:''}` : ''}
           </div>
-          ${b.birthDetails?.length ? `<h3 class="display" style="font-size:1.3rem;margin:20px 0 8px">Birth details</h3><div class="info-grid">${b.birthDetails.map(p=>`<div><dt>${escapeHtml(p.label)}</dt><dd>${escapeHtml(p.name)} Â· ${fmtDate(p.dateOfBirth,'date')}${p.timeOfBirth?' Â· '+p.timeOfBirth:''} Â· ${escapeHtml(p.place)}</dd></div>`).join('')}</div>` : ''}
-          ${b.media?.length ? `<h3 class="display" style="font-size:1.3rem;margin:20px 0 8px">Photos</h3><p class="muted small">${b.media.map(m=>escapeHtml(m.caption)).join(' Â· ')}</p>` : ''}
+          ${b.birthDetails?.length ? `<h3 class="display" style="font-size:1.3rem;margin:20px 0 8px">Birth details</h3><div class="info-grid">${b.birthDetails.map(p=>`<div><dt>${escapeHtml(p.label)}</dt><dd>${escapeHtml(p.name)} · ${fmtDate(p.dateOfBirth,'date')}${p.timeOfBirth?' · '+p.timeOfBirth:''} · ${escapeHtml(p.place)}</dd></div>`).join('')}</div>` : ''}
+          ${b.media?.length ? `<h3 class="display" style="font-size:1.3rem;margin:20px 0 8px">Photos</h3><p class="muted small">${b.media.map(m=>escapeHtml(m.caption)).join(' · ')}</p>` : ''}
           ${b.documents?.length ? `<h3 class="display" style="font-size:1.3rem;margin:20px 0 8px">Documents</h3><ul class="samagri-list">${b.documents.map(d=>`<div class="samagri-row"><span>${escapeHtml(d.title||d.doc_type)}</span><span class="by">${escapeHtml(d.doc_type)}</span></div>`).join('')}</ul>` : ''}
-          ${b.slot ? `<h3 class="display" style="font-size:1.3rem;margin:20px 0 8px">Slot</h3><p class="muted small">${fmtDateTime(b.slot.startAt)} â€“ ${fmtTime(b.slot.endAt)} Â· ${escapeHtml(b.slot.status)}</p>` : ''}
+          ${b.slot ? `<h3 class="display" style="font-size:1.3rem;margin:20px 0 8px">Slot</h3><p class="muted small">${fmtDateTime(b.slot.startAt)} – ${fmtTime(b.slot.endAt)} · ${escapeHtml(b.slot.status)}</p>` : ''}
         </div>
         <div>
           <div class="panel">
@@ -214,9 +214,9 @@ export async function renderProfiles() {
       <div class="panel-head"><h2>Your profiles</h2><p>${(data.profiles||[]).length} saved</p><button class="btn btn-primary btn-sm" id="addProfileBtn">${icon('plus')} Add profile</button></div>
       <div class="profile-grid">${(data.profiles||[]).map(p=>`
         <div class="profile-card">
-          <span class="label-tag">${escapeHtml(p.label)}${p.isDefault?' Â· default':''}</span>
+          <span class="label-tag">${escapeHtml(p.label)}${p.isDefault?' · default':''}</span>
           <h3>${escapeHtml(p.fullName)}</h3>
-          <p>${fmtDate(p.dateOfBirth,'date')} ${p.timeUnknown?'(time unknown)':p.timeOfBirth?'Â· '+p.timeOfBirth:''}<br>${escapeHtml(p.placeOfBirth)}${p.gotra?' Â· '+escapeHtml(p.gotra):''}${p.nakshatra?' Â· '+escapeHtml(p.nakshatra):''}</p>
+          <p>${fmtDate(p.dateOfBirth,'date')} ${p.timeUnknown?'(time unknown)':p.timeOfBirth?'· '+p.timeOfBirth:''}<br>${escapeHtml(p.placeOfBirth)}${p.gotra?' · '+escapeHtml(p.gotra):''}${p.nakshatra?' · '+escapeHtml(p.nakshatra):''}</p>
           <div class="card-actions">
             <button class="btn btn-outline btn-sm" data-edit="${p.id}">${icon('edit')} Edit</button>
             <button class="btn btn-danger btn-sm" data-del="${p.id}">${icon('trash')} Remove</button>
@@ -249,7 +249,7 @@ function profileForm(p = {}) {
       <div class="field"><label>Date of birth *</label><input id="pfDob" type="date" value="${escapeHtml(p.dateOfBirth||'')}" required /></div>
       <div class="field"><label>Time of birth</label><input id="pfTob" type="time" value="${escapeHtml(p.timeOfBirth||'')}" ${p.timeUnknown?'disabled':''} /></div>
     </div>
-    <div class="check-line" style="margin-bottom:12px"><input type="checkbox" id="pfUnknown" ${p.timeUnknown?'checked':''} /><span>I donâ€™t know the time</span></div>
+    <div class="check-line" style="margin-bottom:12px"><input type="checkbox" id="pfUnknown" ${p.timeUnknown?'checked':''} /><span>I don’t know the time</span></div>
     <div class="field"><label>Place of birth *</label><input id="pfPlace" value="${escapeHtml(p.placeOfBirth||'')}" required /></div>
     <div class="field-row">
       <div class="field"><label>Gotra</label><input id="pfGotra" value="${escapeHtml(p.gotra||'')}" /></div>
@@ -302,7 +302,7 @@ export async function renderAddresses() {
       <div class="panel-head"><h2>Your addresses</h2><p>${(data.addresses||[]).length} saved</p><button class="btn btn-primary btn-sm" id="addAddrBtn">${icon('plus')} Add address</button></div>
       <div class="profile-grid">${(data.addresses||[]).map(a=>`
         <div class="profile-card">
-          <span class="label-tag">${escapeHtml(a.label)}${a.isDefault?' Â· default':''}</span>
+          <span class="label-tag">${escapeHtml(a.label)}${a.isDefault?' · default':''}</span>
           <h3>${escapeHtml(a.line1)}</h3>
           <p>${escapeHtml(a.line2||'')}${a.line2?', ':''}${escapeHtml(a.city)}${a.state?', '+escapeHtml(a.state):''} ${escapeHtml(a.postalCode||'')}<br>${a.landmark?'Near '+escapeHtml(a.landmark):''}</p>
           <div class="card-actions">
@@ -393,7 +393,7 @@ export async function renderAccountSettings() {
           <div class="field"><label>City</label><input name="city" value="${escapeHtml(user.city||'')}" /></div>
           <div class="field"><label>Preferred language</label><select name="preferredLanguage"><option value="en" ${user.preferredLanguage==='en'?'selected':''}>English</option><option value="hi" ${user.preferredLanguage==='hi'?'selected':''}>Hindi</option><option value="te" ${user.preferredLanguage==='te'?'selected':''}>Telugu</option><option value="ta" ${user.preferredLanguage==='ta'?'selected':''}>Tamil</option></select></div>
           <div class="field"><label>Preferred contact</label><select name="contactChannel"><option value="CALL" ${user.contactChannel==='CALL'?'selected':''}>Call</option><option value="WHATSAPP" ${user.contactChannel==='WHATSAPP'?'selected':''}>WhatsApp</option></select></div>
-          <div class="field"><label>Call window</label><input name="callWindow" value="${escapeHtml(user.callWindow||'')}" placeholder="Evening 6â€“9 PM" /></div>
+          <div class="field"><label>Call window</label><input name="callWindow" value="${escapeHtml(user.callWindow||'')}" placeholder="Evening 6–9 PM" /></div>
           <div class="check-line" style="margin-bottom:14px"><input type="checkbox" name="marketingOptIn" ${user.marketingOptIn?'checked':''} /><span>Send me a gentle note with the full moon</span></div>
           <button class="btn btn-primary" type="submit">Save changes</button>
         </form>
@@ -403,10 +403,10 @@ export async function renderAccountSettings() {
           <div class="panel-head"><h2>Account</h2></div>
           <dl class="detail-list" style="display:grid;gap:10px;margin:0">
             <div style="display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line-soft);padding-bottom:10px"><dt class="muted small">Full name</dt><dd style="margin:0;font-weight:600">${escapeHtml(user.fullName)}</dd></div>
-            <div style="display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line-soft);padding-bottom:10px"><dt class="muted small">Email</dt><dd style="margin:0;font-weight:600;word-break:break-all;text-align:right">${escapeHtml(user.email || 'â€”')}</dd></div>
-            <div style="display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line-soft);padding-bottom:10px"><dt class="muted small">Phone</dt><dd style="margin:0;font-weight:600">${user.phone ? `${escapeHtml(user.phone)} <span class="muted" style="font-weight:400;font-size:.72rem">(unverified)</span>` : 'â€”'}</dd></div>
+            <div style="display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line-soft);padding-bottom:10px"><dt class="muted small">Email</dt><dd style="margin:0;font-weight:600;word-break:break-all;text-align:right">${escapeHtml(user.email || '—')}</dd></div>
+            <div style="display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line-soft);padding-bottom:10px"><dt class="muted small">Phone</dt><dd style="margin:0;font-weight:600">${user.phone ? `${escapeHtml(user.phone)} <span class="muted" style="font-weight:400;font-size:.72rem">(unverified)</span>` : '—'}</dd></div>
             <div style="display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line-soft);padding-bottom:10px"><dt class="muted small">Account role</dt><dd style="margin:0;font-weight:600">${escapeHtml(({ OWNER:'Owner', ADMIN:'Admin', STAFF:'Staff', PROVIDER:'Pandit', CUSTOMER:'Customer' }[user.role] || user.role || 'Customer'))}</dd></div>
-            <div style="display:flex;justify-content:space-between;gap:12px"><dt class="muted small">Member since</dt><dd style="margin:0;font-weight:600">${user.createdAt ? fmtDate(user.createdAt, 'long') : 'â€”'}</dd></div>
+            <div style="display:flex;justify-content:space-between;gap:12px"><dt class="muted small">Member since</dt><dd style="margin:0;font-weight:600">${user.createdAt ? fmtDate(user.createdAt, 'long') : '—'}</dd></div>
           </dl>
           <p class="muted small" style="margin-top:12px">Roles are assigned by Aradhana and cannot be changed from this page. Phone sign-in will arrive in a future update.</p>
         </div>
@@ -430,7 +430,7 @@ export async function renderAccountSettings() {
         ${cloud ? `
         <div class="panel" style="margin-top:18px">
           <div class="panel-head"><h2>Email account profile</h2></div>
-          <p class="muted small" style="margin-bottom:12px">Stored in Supabase PostgreSQL with row-level security â€” only you can read or change it.</p>
+          <p class="muted small" style="margin-bottom:12px">Stored in Supabase PostgreSQL with row-level security — only you can read or change it.</p>
           <form id="cloudForm">
             <div class="field"><label>Full name</label><input name="fullName" value="${escapeHtml(cloud.full_name || user.fullName || '')}" /></div>
             <div class="field"><label>Phone</label><input name="phone" value="${escapeHtml(cloud.phone || user.phone || '')}" /></div>
@@ -449,7 +449,7 @@ export async function renderAccountSettings() {
       body.marketingOptIn = fd.has('marketingOptIn');
       try {
         await API.put('/api/me', body);
-        await (await import('./core.js?v=14')).loadMe();
+        await (await import('./core.js?v=15')).loadMe();
         toast('Saved', 'Your details have been updated.', 'success');
       } catch (err) { toast('Could not save', err.message, 'error'); }
     });
@@ -462,7 +462,7 @@ export async function renderAccountSettings() {
         await authSupabase.updateMyProfile({ fullName: fd.get('fullName'), phone: fd.get('phone') });
         // Keep the app's own users table consistent too (mirrors to Supabase).
         try { await API.put('/api/me', { fullName: fd.get('fullName') }); } catch { /* non-fatal */ }
-        await (await import('./core.js?v=14')).loadMe();
+        await (await import('./core.js?v=15')).loadMe();
         toast('Saved', 'Your email account profile is updated.', 'success');
       } catch (err) { toast('Could not save', err.message, 'error'); }
     });
@@ -473,7 +473,7 @@ export async function renderAccountSettings() {
       try {
         await API.post('/api/account/delete', { confirm: document.getElementById('deleteConfirm').value });
         toast('Account deleted', 'Your data has been removed.', 'success');
-        await (await import('./core.js?v=14')).logout();
+        await (await import('./core.js?v=15')).logout();
       } catch (e) { toast('Could not delete', e.message, 'error'); }
     });
   }, 0);

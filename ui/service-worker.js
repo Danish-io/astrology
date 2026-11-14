@@ -1,6 +1,6 @@
 'use strict';
-const CACHE = 'aradhana-v14';
-const SHELL = ['/', '/assets/css/styles.css', '/assets/js/app.js?v=14', '/assets/js/core.js?v=14', '/assets/js/pages-public.js?v=14', '/assets/js/pages-booking.js?v=14', '/assets/js/pages-account.js?v=14', '/assets/js/pages-admin.js?v=14', '/manifest.json', '/assets/favicon.svg'];
+const CACHE = 'aradhana-v15';
+const SHELL = ['/', '/assets/css/styles.css', '/assets/js/app.js?v=15', '/assets/js/core.js?v=15', '/assets/js/pages-public.js?v=15', '/assets/js/pages-booking.js?v=15', '/assets/js/pages-account.js?v=15', '/assets/js/pages-admin.js?v=15', '/manifest.json', '/assets/favicon.svg'];
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(SHELL)).catch(() => {}));
   self.skipWaiting();
