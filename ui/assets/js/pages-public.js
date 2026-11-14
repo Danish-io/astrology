@@ -3,7 +3,7 @@ import {
   state, API, escapeHtml, fmtDate, fmtTime, fmtDateTime, initials, badge, icon, iconFilled,
   stars, layout, sectionHead, empty, spinner, pageHero, breadcrumb, serviceIcon, setting,
   panditName, panditShort, siteName, parseJson, ensure, navigate, toast, modal, qsa
-} from './core.js?v=15';
+} from './core.js?v=16';
 
 function serviceCard(s) {
   const artClass = s.type === 'CONSULTATION' ? 'art-consult' : (s.type === 'EVENT' ? 'art-event' : '');

@@ -441,7 +441,7 @@ export function isProvider() { return !!state.user?.provider; }
 export async function logout() {
   // Clear the Supabase session (if any) first, then the backend cookie.
   try {
-    const a = await import('./auth-supabase.js?v=15');
+    const a = await import('./auth-supabase.js?v=16');
     await a.signOut();
   } catch {
     try { await API.post('/api/auth/logout'); } catch {}
@@ -571,7 +571,7 @@ export async function boot() {
     if (isAuthUrl) {
       let target = '#/login';
       if (!errCode) {
-        const a = await import('./auth-supabase.js?v=15');
+        const a = await import('./auth-supabase.js?v=16');
         const restored = await a.restoreSupabaseSession();
         if (restored) {
           await loadMe();
@@ -590,7 +590,7 @@ export async function boot() {
   } catch (bootErr) { console.warn('[boot] auth-url handling failed:', bootErr?.message || bootErr); }
   if (!state.user) {
     try {
-      const a = await import('./auth-supabase.js?v=15');
+      const a = await import('./auth-supabase.js?v=16');
       const restored = await a.restoreSupabaseSession();
       if (restored) await loadMe();
     } catch { /* Supabase optional */ }
@@ -598,11 +598,11 @@ export async function boot() {
   // Centralized auth-state listener: keeps every tab in sync with the
   // official Supabase session (sign-out in another tab, token refresh).
   try {
-    const { onSupabaseAuthStateChange } = await import('./supabase-client.js?v=15');
+    const { onSupabaseAuthStateChange } = await import('./supabase-client.js?v=16');
     await onSupabaseAuthStateChange(async (event, session) => {
       if (event === 'SIGNED_IN' && session?.access_token) {
         try {
-          const a = await import('./auth-supabase.js?v=15');
+          const a = await import('./auth-supabase.js?v=16');
           await a.syncBackend(session.access_token);
           await loadMe();
         } catch { /* bridge failed — next API call will retry */ }
